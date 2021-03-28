@@ -4,15 +4,15 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_PPO_H_
-#define PUBLIC_FPDF_PPO_H_
+//#ifndef PUBLIC_FPDF_PPO_H_
+//#define PUBLIC_FPDF_PPO_H_
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 // Import pages to a FPDF_DOCUMENT.
 //
@@ -23,7 +23,7 @@ extern "C" {
 //   index     - The page index to insert at.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_ImportPages(FPDF_DOCUMENT dest_doc,
+ FPDF_BOOL  FPDF_ImportPages(FPDF_DOCUMENT dest_doc,
                                                      FPDF_DOCUMENT src_doc,
                                                      FPDF_BYTESTRING pagerange,
                                                      int index);
@@ -45,7 +45,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_ImportPages(FPDF_DOCUMENT dest_doc,
 // Comments:
 //   number of pages per page = num_pages_on_x_axis * num_pages_on_y_axis
 //
-FPDF_EXPORT FPDF_DOCUMENT FPDF_CALLCONV
+ FPDF_DOCUMENT 
 FPDF_ImportNPagesToOne(FPDF_DOCUMENT src_doc,
                        float output_width,
                        float output_height,
@@ -58,11 +58,11 @@ FPDF_ImportNPagesToOne(FPDF_DOCUMENT src_doc,
 //   src_doc  - Document to read the viewer preferences from.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDF_CopyViewerPreferences(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc);
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//}  // extern "C"
+//#endif  // __cplusplus
 
-#endif  // PUBLIC_FPDF_PPO_H_
+//#endif  // PUBLIC_FPDF_PPO_H_

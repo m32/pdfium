@@ -4,21 +4,21 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_EDIT_H_
-#define PUBLIC_FPDF_EDIT_H_
+//#ifndef PUBLIC_FPDF_EDIT_H_
+//#define PUBLIC_FPDF_EDIT_H_
 
-#include <stdint.h>
+//#include <stdint.h>
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#define FPDF_ARGB(a, r, g, b)                                      \
-  ((uint32_t)(((uint32_t)(b)&0xff) | (((uint32_t)(g)&0xff) << 8) | \
-              (((uint32_t)(r)&0xff) << 16) | (((uint32_t)(a)&0xff) << 24)))
-#define FPDF_GetBValue(argb) ((uint8_t)(argb))
-#define FPDF_GetGValue(argb) ((uint8_t)(((uint16_t)(argb)) >> 8))
-#define FPDF_GetRValue(argb) ((uint8_t)((argb) >> 16))
-#define FPDF_GetAValue(argb) ((uint8_t)((argb) >> 24))
+//#define FPDF_ARGB(a, r, g, b)                                      \
+//  ((uint32_t)(((uint32_t)(b)&0xff) | (((uint32_t)(g)&0xff) << 8) | \
+//              (((uint32_t)(r)&0xff) << 16) | (((uint32_t)(a)&0xff) << 24)))
+//#define FPDF_GetBValue(argb) ((uint8_t)(argb))
+//#define FPDF_GetGValue(argb) ((uint8_t)(((uint16_t)(argb)) >> 8))
+//#define FPDF_GetRValue(argb) ((uint8_t)((argb) >> 16))
+//#define FPDF_GetAValue(argb) ((uint8_t)((argb) >> 24))
 
 // Refer to PDF Reference version 1.7 table 4.12 for all color space families.
 #define FPDF_COLORSPACE_UNKNOWN 0
@@ -63,12 +63,14 @@
 #define FPDF_LINEJOIN_ROUND 1
 #define FPDF_LINEJOIN_BEVEL 2
 
+// See FPDF_SetPrintMode() for descriptions.
 #define FPDF_PRINTMODE_EMF 0
 #define FPDF_PRINTMODE_TEXTONLY 1
 #define FPDF_PRINTMODE_POSTSCRIPT2 2
 #define FPDF_PRINTMODE_POSTSCRIPT3 3
 #define FPDF_PRINTMODE_POSTSCRIPT2_PASSTHROUGH 4
 #define FPDF_PRINTMODE_POSTSCRIPT3_PASSTHROUGH 5
+#define FPDF_PRINTMODE_EMF_IMAGE_MASKS 6
 
 typedef struct FPDF_IMAGEOBJ_METADATA {
   // The image width in pixels.
@@ -88,14 +90,14 @@ typedef struct FPDF_IMAGEOBJ_METADATA {
   int marked_content_id;
 } FPDF_IMAGEOBJ_METADATA;
 
-#ifdef __cplusplus
-extern "C" {
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//extern "C" {
+//#endif  // __cplusplus
 
 // Create a new PDF document.
 //
 // Returns a handle to a new document, or NULL on failure.
-FPDF_EXPORT FPDF_DOCUMENT FPDF_CALLCONV FPDF_CreateNewDocument();
+ FPDF_DOCUMENT  FPDF_CreateNewDocument();
 
 // Create a new PDF page.
 //
@@ -110,7 +112,7 @@ FPDF_EXPORT FPDF_DOCUMENT FPDF_CALLCONV FPDF_CreateNewDocument();
 //
 // The page should be closed with FPDF_ClosePage() when finished as
 // with any other page in the document.
-FPDF_EXPORT FPDF_PAGE FPDF_CALLCONV FPDFPage_New(FPDF_DOCUMENT document,
+ FPDF_PAGE  FPDFPage_New(FPDF_DOCUMENT document,
                                                  int page_index,
                                                  double width,
                                                  double height);
@@ -119,7 +121,7 @@ FPDF_EXPORT FPDF_PAGE FPDF_CALLCONV FPDFPage_New(FPDF_DOCUMENT document,
 //
 //   document   - handle to document.
 //   page_index - the index of the page to delete.
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_Delete(FPDF_DOCUMENT document,
+ void  FPDFPage_Delete(FPDF_DOCUMENT document,
                                                int page_index);
 
 // Get the rotation of |page|.
@@ -131,7 +133,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_Delete(FPDF_DOCUMENT document,
 //   1 - Rotated 90 degrees clockwise.
 //   2 - Rotated 180 degrees clockwise.
 //   3 - Rotated 270 degrees clockwise.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPage_GetRotation(FPDF_PAGE page);
+ int  FPDFPage_GetRotation(FPDF_PAGE page);
 
 // Set rotation for |page|.
 //
@@ -141,14 +143,14 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFPage_GetRotation(FPDF_PAGE page);
 //              1 - Rotated 90 degrees clockwise.
 //              2 - Rotated 180 degrees clockwise.
 //              3 - Rotated 270 degrees clockwise.
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetRotation(FPDF_PAGE page, int rotate);
+ void  FPDFPage_SetRotation(FPDF_PAGE page, int rotate);
 
 // Insert |page_obj| into |page|.
 //
 //   page     - handle to a page
 //   page_obj - handle to a page object. The |page_obj| will be automatically
 //              freed.
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_InsertObject(FPDF_PAGE page,
+ void  FPDFPage_InsertObject(FPDF_PAGE page,
                                                      FPDF_PAGEOBJECT page_obj);
 
 // Experimental API.
@@ -161,7 +163,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_InsertObject(FPDF_PAGE page,
 //
 // Ownership is transferred to the caller. Call FPDFPageObj_Destroy() to free
 // it.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPage_RemoveObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_obj);
 
 // Get number of page objects inside |page|.
@@ -169,7 +171,7 @@ FPDFPage_RemoveObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_obj);
 //   page - handle to a page.
 //
 // Returns the number of objects in |page|.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPage_CountObjects(FPDF_PAGE page);
+ int  FPDFPage_CountObjects(FPDF_PAGE page);
 
 // Get object in |page| at |index|.
 //
@@ -177,7 +179,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFPage_CountObjects(FPDF_PAGE page);
 //   index - the index of a page object.
 //
 // Returns the handle to the page object, or NULL on failed.
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPage_GetObject(FPDF_PAGE page,
+ FPDF_PAGEOBJECT  FPDFPage_GetObject(FPDF_PAGE page,
                                                              int index);
 
 // Checks if |page| contains transparency.
@@ -185,7 +187,7 @@ FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPage_GetObject(FPDF_PAGE page,
 //   page - handle to a page.
 //
 // Returns TRUE if |page| contains transparency.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_HasTransparency(FPDF_PAGE page);
+ FPDF_BOOL  FPDFPage_HasTransparency(FPDF_PAGE page);
 
 // Generate the content of |page|.
 //
@@ -195,7 +197,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_HasTransparency(FPDF_PAGE page);
 //
 // Before you save the page to a file, or reload the page, you must call
 // |FPDFPage_GenerateContent| or any changes to |page| will be lost.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GenerateContent(FPDF_PAGE page);
+ FPDF_BOOL  FPDFPage_GenerateContent(FPDF_PAGE page);
 
 // Destroy |page_obj| by releasing its resources. |page_obj| must have been
 // created by FPDFPageObj_CreateNew{Path|Rect}() or
@@ -204,14 +206,14 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GenerateContent(FPDF_PAGE page);
 // FPDFPage_InsertObject() or to an annotation through FPDFAnnot_AppendObject().
 //
 //   page_obj - handle to a page object.
-FPDF_EXPORT void FPDF_CALLCONV FPDFPageObj_Destroy(FPDF_PAGEOBJECT page_obj);
+ void  FPDFPageObj_Destroy(FPDF_PAGEOBJECT page_obj);
 
 // Checks if |page_object| contains transparency.
 //
 //   page_object - handle to a page object.
 //
 // Returns TRUE if |page_object| contains transparency.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_HasTransparency(FPDF_PAGEOBJECT page_object);
 
 // Get type of |page_object|.
@@ -220,7 +222,7 @@ FPDFPageObj_HasTransparency(FPDF_PAGEOBJECT page_object);
 //
 // Returns one of the FPDF_PAGEOBJ_* values on success, FPDF_PAGEOBJ_UNKNOWN on
 // error.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPageObj_GetType(FPDF_PAGEOBJECT page_object);
+ int  FPDFPageObj_GetType(FPDF_PAGEOBJECT page_object);
 
 // Transform |page_object| by the given matrix.
 //
@@ -236,7 +238,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFPageObj_GetType(FPDF_PAGEOBJECT page_object);
 //   |a c e|
 //   |b d f|
 // and can be used to scale, rotate, shear and translate the |page_object|.
-FPDF_EXPORT void FPDF_CALLCONV
+ void 
 FPDFPageObj_Transform(FPDF_PAGEOBJECT page_object,
                       double a,
                       double b,
@@ -259,7 +261,7 @@ FPDFPageObj_Transform(FPDF_PAGEOBJECT page_object,
 //   |a c e|
 //   |b d f|
 // and can be used to scale, rotate, shear and translate the |page| annotations.
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_TransformAnnots(FPDF_PAGE page,
+ void  FPDFPage_TransformAnnots(FPDF_PAGE page,
                                                         double a,
                                                         double b,
                                                         double c,
@@ -272,7 +274,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_TransformAnnots(FPDF_PAGE page,
 //   document - handle to a document.
 //
 // Returns a handle to a new image object.
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV
+ FPDF_PAGEOBJECT 
 FPDFPageObj_NewImageObj(FPDF_DOCUMENT document);
 
 // Experimental API.
@@ -282,7 +284,7 @@ FPDFPageObj_NewImageObj(FPDF_DOCUMENT document);
 //
 // Returns the number of content marks in |page_object|, or -1 in case of
 // failure.
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFPageObj_CountMarks(FPDF_PAGEOBJECT page_object);
 
 // Experimental API.
@@ -295,7 +297,7 @@ FPDFPageObj_CountMarks(FPDF_PAGEOBJECT page_object);
 // still owned by the library, and it should not be freed directly. It becomes
 // invalid if the page object is destroyed, either directly or indirectly by
 // unloading the page.
-FPDF_EXPORT FPDF_PAGEOBJECTMARK FPDF_CALLCONV
+ FPDF_PAGEOBJECTMARK 
 FPDFPageObj_GetMark(FPDF_PAGEOBJECT page_object, unsigned long index);
 
 // Experimental API.
@@ -308,7 +310,7 @@ FPDFPageObj_GetMark(FPDF_PAGEOBJECT page_object, unsigned long index);
 // still owned by the library, and it should not be freed directly. It becomes
 // invalid if the page object is destroyed, either directly or indirectly by
 // unloading the page.
-FPDF_EXPORT FPDF_PAGEOBJECTMARK FPDF_CALLCONV
+ FPDF_PAGEOBJECTMARK 
 FPDFPageObj_AddMark(FPDF_PAGEOBJECT page_object, FPDF_BYTESTRING name);
 
 // Experimental API.
@@ -319,7 +321,7 @@ FPDFPageObj_AddMark(FPDF_PAGEOBJECT page_object, FPDF_BYTESTRING name);
 //   mark        - handle to a content mark in that object to remove.
 //
 // Returns TRUE if the operation succeeded, FALSE if it failed.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_RemoveMark(FPDF_PAGEOBJECT page_object, FPDF_PAGEOBJECTMARK mark);
 
 // Experimental API.
@@ -335,7 +337,7 @@ FPDFPageObj_RemoveMark(FPDF_PAGEOBJECT page_object, FPDF_PAGEOBJECTMARK mark);
 //                to contain the name. Not filled if FALSE is returned.
 //
 // Returns TRUE if the operation succeeded, FALSE if it failed.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_GetName(FPDF_PAGEOBJECTMARK mark,
                         void* buffer,
                         unsigned long buflen,
@@ -348,7 +350,7 @@ FPDFPageObjMark_GetName(FPDF_PAGEOBJECTMARK mark,
 //
 // Returns the number of key/value pair parameters |mark|, or -1 in case of
 // failure.
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFPageObjMark_CountParams(FPDF_PAGEOBJECTMARK mark);
 
 // Experimental API.
@@ -365,7 +367,7 @@ FPDFPageObjMark_CountParams(FPDF_PAGEOBJECTMARK mark);
 //                to contain the key. Not filled if FALSE is returned.
 //
 // Returns TRUE if the operation was successful, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_GetParamKey(FPDF_PAGEOBJECTMARK mark,
                             unsigned long index,
                             void* buffer,
@@ -379,7 +381,7 @@ FPDFPageObjMark_GetParamKey(FPDF_PAGEOBJECTMARK mark,
 //   key    - string key of the property.
 //
 // Returns the type of the value, or FPDF_OBJECT_UNKNOWN in case of failure.
-FPDF_EXPORT FPDF_OBJECT_TYPE FPDF_CALLCONV
+ FPDF_OBJECT_TYPE 
 FPDFPageObjMark_GetParamValueType(FPDF_PAGEOBJECTMARK mark,
                                   FPDF_BYTESTRING key);
 
@@ -394,7 +396,7 @@ FPDFPageObjMark_GetParamValueType(FPDF_PAGEOBJECTMARK mark,
 //               false is returned.
 //
 // Returns TRUE if the key maps to a number value, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_GetParamIntValue(FPDF_PAGEOBJECTMARK mark,
                                  FPDF_BYTESTRING key,
                                  int* out_value);
@@ -414,7 +416,7 @@ FPDFPageObjMark_GetParamIntValue(FPDF_PAGEOBJECTMARK mark,
 //                to contain the value. Not filled if FALSE is returned.
 //
 // Returns TRUE if the key maps to a string/blob value, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_GetParamStringValue(FPDF_PAGEOBJECTMARK mark,
                                     FPDF_BYTESTRING key,
                                     void* buffer,
@@ -435,7 +437,7 @@ FPDFPageObjMark_GetParamStringValue(FPDF_PAGEOBJECTMARK mark,
 //                to contain the value. Not filled if FALSE is returned.
 //
 // Returns TRUE if the key maps to a string/blob value, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_GetParamBlobValue(FPDF_PAGEOBJECTMARK mark,
                                   FPDF_BYTESTRING key,
                                   void* buffer,
@@ -454,7 +456,7 @@ FPDFPageObjMark_GetParamBlobValue(FPDF_PAGEOBJECTMARK mark,
 //   value       - int value to set.
 //
 // Returns TRUE if the operation succeeded, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_SetIntParam(FPDF_DOCUMENT document,
                             FPDF_PAGEOBJECT page_object,
                             FPDF_PAGEOBJECTMARK mark,
@@ -473,7 +475,7 @@ FPDFPageObjMark_SetIntParam(FPDF_DOCUMENT document,
 //   value       - string value to set.
 //
 // Returns TRUE if the operation succeeded, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_SetStringParam(FPDF_DOCUMENT document,
                                FPDF_PAGEOBJECT page_object,
                                FPDF_PAGEOBJECTMARK mark,
@@ -493,7 +495,7 @@ FPDFPageObjMark_SetStringParam(FPDF_DOCUMENT document,
 //   value_len   - size in bytes of |value|.
 //
 // Returns TRUE if the operation succeeded, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_SetBlobParam(FPDF_DOCUMENT document,
                              FPDF_PAGEOBJECT page_object,
                              FPDF_PAGEOBJECTMARK mark,
@@ -509,7 +511,7 @@ FPDFPageObjMark_SetBlobParam(FPDF_DOCUMENT document,
 //   key         - string key of the property.
 //
 // Returns TRUE if the operation succeeded, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObjMark_RemoveParam(FPDF_PAGEOBJECT page_object,
                             FPDF_PAGEOBJECTMARK mark,
                             FPDF_BYTESTRING key);
@@ -528,7 +530,7 @@ FPDFPageObjMark_RemoveParam(FPDF_PAGEOBJECT page_object,
 // for all the loaded pages. Pass |pages| and page count (|count|) to this API
 // to clear the image cache. If the image is not previously shared, or NULL is a
 // valid |pages| value.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_LoadJpegFile(FPDF_PAGE* pages,
                           int count,
                           FPDF_PAGEOBJECT image_object,
@@ -550,7 +552,7 @@ FPDFImageObj_LoadJpegFile(FPDF_PAGE* pages,
 // valid |pages| value. This function loads the JPEG image inline, so the image
 // content is copied to the file. This allows |file_access| and its associated
 // data to be deleted after this function returns.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_LoadJpegFileInline(FPDF_PAGE* pages,
                                 int count,
                                 FPDF_PAGEOBJECT image_object,
@@ -573,7 +575,7 @@ FPDFImageObj_LoadJpegFileInline(FPDF_PAGE* pages,
 // and used to scale, rotate, shear and translate the image.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_GetMatrix(FPDF_PAGEOBJECT image_object,
                        double* a,
                        double* b,
@@ -598,7 +600,7 @@ FPDFImageObj_GetMatrix(FPDF_PAGEOBJECT image_object,
 // and can be used to scale, rotate, shear and translate the |image_object|.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_SetMatrix(FPDF_PAGEOBJECT image_object,
                        double a,
                        double b,
@@ -615,21 +617,41 @@ FPDFImageObj_SetMatrix(FPDF_PAGEOBJECT image_object,
 //   bitmap       - handle of the bitmap.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_SetBitmap(FPDF_PAGE* pages,
                        int count,
                        FPDF_PAGEOBJECT image_object,
                        FPDF_BITMAP bitmap);
 
-// Get a bitmap rasterisation of |image_object|. The returned bitmap will be
-// owned by the caller, and FPDFBitmap_Destroy() must be called on the returned
-// bitmap when it is no longer needed.
+// Get a bitmap rasterization of |image_object|. FPDFImageObj_GetBitmap() only
+// operates on |image_object| and does not take the associated image mask into
+// account. It also ignores the matrix for |image_object|.
+// The returned bitmap will be owned by the caller, and FPDFBitmap_Destroy()
+// must be called on the returned bitmap when it is no longer needed.
 //
 //   image_object - handle to an image object.
 //
 // Returns the bitmap.
-FPDF_EXPORT FPDF_BITMAP FPDF_CALLCONV
+ FPDF_BITMAP 
 FPDFImageObj_GetBitmap(FPDF_PAGEOBJECT image_object);
+
+// Experimental API.
+// Get a bitmap rasterization of |image_object| that takes the image mask and
+// image matrix into account. To render correctly, the caller must provide the
+// |document| associated with |image_object|. If there is a |page| associated
+// with |image_object| the caller should provide that as well.
+// The returned bitmap will be owned by the caller, and FPDFBitmap_Destroy()
+// must be called on the returned bitmap when it is no longer needed.
+//
+//   document     - handle to a document associated with |image_object|.
+//   page         - handle to an optional page associated with |image_object|.
+//   image_object - handle to an image object.
+//
+// Returns the bitmap.
+ FPDF_BITMAP 
+FPDFImageObj_GetRenderedBitmap(FPDF_DOCUMENT document,
+                               FPDF_PAGE page,
+                               FPDF_PAGEOBJECT image_object);
 
 // Get the decoded image data of |image_object|. The decoded data is the
 // uncompressed image data, i.e. the raw image data after having all filters
@@ -641,7 +663,7 @@ FPDFImageObj_GetBitmap(FPDF_PAGEOBJECT image_object);
 //   buflen       - length of the buffer in bytes.
 //
 // Returns the length of the decoded image data.
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFImageObj_GetImageDataDecoded(FPDF_PAGEOBJECT image_object,
                                  void* buffer,
                                  unsigned long buflen);
@@ -655,7 +677,7 @@ FPDFImageObj_GetImageDataDecoded(FPDF_PAGEOBJECT image_object,
 //   buflen       - length of the buffer in bytes.
 //
 // Returns the length of the raw image data.
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFImageObj_GetImageDataRaw(FPDF_PAGEOBJECT image_object,
                              void* buffer,
                              unsigned long buflen);
@@ -665,7 +687,7 @@ FPDFImageObj_GetImageDataRaw(FPDF_PAGEOBJECT image_object,
 //   image_object - handle to an image object.
 //
 // Returns the number of |image_object|'s filters.
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFImageObj_GetImageFilterCount(FPDF_PAGEOBJECT image_object);
 
 // Get the filter at |index| of |image_object|'s list of filters. Note that the
@@ -679,7 +701,7 @@ FPDFImageObj_GetImageFilterCount(FPDF_PAGEOBJECT image_object);
 //   buflen       - length of the buffer.
 //
 // Returns the length of the filter string.
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFImageObj_GetImageFilter(FPDF_PAGEOBJECT image_object,
                             int index,
                             void* buffer,
@@ -696,7 +718,7 @@ FPDFImageObj_GetImageFilter(FPDF_PAGEOBJECT image_object,
 //   metadata     - receives the image metadata; must not be NULL.
 //
 // Returns true if successful.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFImageObj_GetImageMetadata(FPDF_PAGEOBJECT image_object,
                               FPDF_PAGE page,
                               FPDF_IMAGEOBJ_METADATA* metadata);
@@ -707,7 +729,7 @@ FPDFImageObj_GetImageMetadata(FPDF_PAGEOBJECT image_object,
 //   y - initial vertical position.
 //
 // Returns a handle to a new path object.
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPageObj_CreateNewPath(float x,
+ FPDF_PAGEOBJECT  FPDFPageObj_CreateNewPath(float x,
                                                                     float y);
 
 // Create a closed path consisting of a rectangle.
@@ -718,7 +740,7 @@ FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPageObj_CreateNewPath(float x,
 //   h - height of the rectangle.
 //
 // Returns a handle to the new path object.
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPageObj_CreateNewRect(float x,
+ FPDF_PAGEOBJECT  FPDFPageObj_CreateNewRect(float x,
                                                                     float y,
                                                                     float w,
                                                                     float h);
@@ -732,7 +754,7 @@ FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV FPDFPageObj_CreateNewRect(float x,
 // top          - pointer where the top coordinate will be stored
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_GetBounds(FPDF_PAGEOBJECT page_object,
                       float* left,
                       float* bottom,
@@ -747,7 +769,7 @@ FPDFPageObj_GetBounds(FPDF_PAGEOBJECT page_object,
 // Blend mode can be one of following: Color, ColorBurn, ColorDodge, Darken,
 // Difference, Exclusion, HardLight, Hue, Lighten, Luminosity, Multiply, Normal,
 // Overlay, Saturation, Screen, SoftLight
-FPDF_EXPORT void FPDF_CALLCONV
+ void 
 FPDFPageObj_SetBlendMode(FPDF_PAGEOBJECT page_object,
                          FPDF_BYTESTRING blend_mode);
 
@@ -760,7 +782,7 @@ FPDFPageObj_SetBlendMode(FPDF_PAGEOBJECT page_object,
 // A            - the stroke alpha for the object.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_SetStrokeColor(FPDF_PAGEOBJECT page_object,
                            unsigned int R,
                            unsigned int G,
@@ -776,7 +798,7 @@ FPDFPageObj_SetStrokeColor(FPDF_PAGEOBJECT page_object,
 // A            - the stroke alpha of the object.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_GetStrokeColor(FPDF_PAGEOBJECT page_object,
                            unsigned int* R,
                            unsigned int* G,
@@ -789,7 +811,7 @@ FPDFPageObj_GetStrokeColor(FPDF_PAGEOBJECT page_object,
 // width  - the width of the stroke.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_SetStrokeWidth(FPDF_PAGEOBJECT page_object, float width);
 
 // Experimental API.
@@ -799,7 +821,7 @@ FPDFPageObj_SetStrokeWidth(FPDF_PAGEOBJECT page_object, float width);
 // width  - the width of the stroke.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_GetStrokeWidth(FPDF_PAGEOBJECT page_object, float* width);
 
 // Get the line join of |page_object|.
@@ -809,7 +831,7 @@ FPDFPageObj_GetStrokeWidth(FPDF_PAGEOBJECT page_object, float* width);
 // Returns the line join, or -1 on failure.
 // Line join can be one of following: FPDF_LINEJOIN_MITER, FPDF_LINEJOIN_ROUND,
 // FPDF_LINEJOIN_BEVEL
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFPageObj_GetLineJoin(FPDF_PAGEOBJECT page_object);
 
 // Set the line join of |page_object|.
@@ -819,7 +841,7 @@ FPDFPageObj_GetLineJoin(FPDF_PAGEOBJECT page_object);
 //
 // Line join can be one of following: FPDF_LINEJOIN_MITER, FPDF_LINEJOIN_ROUND,
 // FPDF_LINEJOIN_BEVEL
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_SetLineJoin(FPDF_PAGEOBJECT page_object, int line_join);
 
 // Get the line cap of |page_object|.
@@ -829,7 +851,7 @@ FPDFPageObj_SetLineJoin(FPDF_PAGEOBJECT page_object, int line_join);
 // Returns the line cap, or -1 on failure.
 // Line cap can be one of following: FPDF_LINECAP_BUTT, FPDF_LINECAP_ROUND,
 // FPDF_LINECAP_PROJECTING_SQUARE
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFPageObj_GetLineCap(FPDF_PAGEOBJECT page_object);
 
 // Set the line cap of |page_object|.
@@ -839,7 +861,7 @@ FPDFPageObj_GetLineCap(FPDF_PAGEOBJECT page_object);
 //
 // Line cap can be one of following: FPDF_LINECAP_BUTT, FPDF_LINECAP_ROUND,
 // FPDF_LINECAP_PROJECTING_SQUARE
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_SetLineCap(FPDF_PAGEOBJECT page_object, int line_cap);
 
 // Set the fill RGBA of a page object. Range of values: 0 - 255.
@@ -851,7 +873,7 @@ FPDFPageObj_SetLineCap(FPDF_PAGEOBJECT page_object, int line_cap);
 // A            - the fill alpha for the object.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_SetFillColor(FPDF_PAGEOBJECT page_object,
                          unsigned int R,
                          unsigned int G,
@@ -867,14 +889,13 @@ FPDFPageObj_SetFillColor(FPDF_PAGEOBJECT page_object,
 // A            - the fill alpha of the object.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPageObj_GetFillColor(FPDF_PAGEOBJECT page_object,
                          unsigned int* R,
                          unsigned int* G,
                          unsigned int* B,
                          unsigned int* A);
 
-// Experimental API.
 // Get number of segments inside |path|.
 //
 //   path - handle to a path.
@@ -883,19 +904,17 @@ FPDFPageObj_GetFillColor(FPDF_PAGEOBJECT page_object,
 // FPDFPath_LineTo() or FPDFPath_BezierTo().
 //
 // Returns the number of objects in |path| or -1 on failure.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPath_CountSegments(FPDF_PAGEOBJECT path);
+ int  FPDFPath_CountSegments(FPDF_PAGEOBJECT path);
 
-// Experimental API.
 // Get segment in |path| at |index|.
 //
 //   path  - handle to a path.
 //   index - the index of a segment.
 //
 // Returns the handle to the segment, or NULL on faiure.
-FPDF_EXPORT FPDF_PATHSEGMENT FPDF_CALLCONV
+ FPDF_PATHSEGMENT 
 FPDFPath_GetPathSegment(FPDF_PAGEOBJECT path, int index);
 
-// Experimental API.
 // Get coordinates of |segment|.
 //
 //   segment  - handle to a segment.
@@ -903,25 +922,23 @@ FPDFPath_GetPathSegment(FPDF_PAGEOBJECT path, int index);
 //   y      - the vertical position of the segment.
 //
 // Returns TRUE on success, otherwise |x| and |y| is not set.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPathSegment_GetPoint(FPDF_PATHSEGMENT segment, float* x, float* y);
 
-// Experimental API.
 // Get type of |segment|.
 //
 //   segment - handle to a segment.
 //
 // Returns one of the FPDF_SEGMENT_* values on success,
 // FPDF_SEGMENT_UNKNOWN on error.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPathSegment_GetType(FPDF_PATHSEGMENT segment);
+ int  FPDFPathSegment_GetType(FPDF_PATHSEGMENT segment);
 
-// Experimental API.
 // Gets if the |segment| closes the current subpath of a given path.
 //
 //   segment - handle to a segment.
 //
 // Returns close flag for non-NULL segment, FALSE otherwise.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPathSegment_GetClose(FPDF_PATHSEGMENT segment);
 
 // Move a path's current point.
@@ -934,7 +951,7 @@ FPDFPathSegment_GetClose(FPDF_PATHSEGMENT segment);
 // new one.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_MoveTo(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_MoveTo(FPDF_PAGEOBJECT path,
                                                     float x,
                                                     float y);
 
@@ -947,7 +964,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_MoveTo(FPDF_PAGEOBJECT path,
 // The path's current point is changed to (x, y).
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_LineTo(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_LineTo(FPDF_PAGEOBJECT path,
                                                     float x,
                                                     float y);
 
@@ -962,7 +979,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_LineTo(FPDF_PAGEOBJECT path,
 // y3     - the vertical position of the ending point of the Bezier curve.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_BezierTo(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_BezierTo(FPDF_PAGEOBJECT path,
                                                       float x1,
                                                       float y1,
                                                       float x2,
@@ -978,7 +995,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_BezierTo(FPDF_PAGEOBJECT path,
 // subpath, thus terminating the current subpath.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_Close(FPDF_PAGEOBJECT path);
+ FPDF_BOOL  FPDFPath_Close(FPDF_PAGEOBJECT path);
 
 // Set the drawing mode of a path.
 //
@@ -987,7 +1004,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_Close(FPDF_PAGEOBJECT path);
 // stroke   - a boolean specifying if the path should be stroked or not.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_SetDrawMode(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_SetDrawMode(FPDF_PAGEOBJECT path,
                                                          int fillmode,
                                                          FPDF_BOOL stroke);
 
@@ -999,7 +1016,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_SetDrawMode(FPDF_PAGEOBJECT path,
 // stroke   - a boolean specifying if the path is stroked or not.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_GetDrawMode(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_GetDrawMode(FPDF_PAGEOBJECT path,
                                                          int* fillmode,
                                                          FPDF_BOOL* stroke);
 
@@ -1015,7 +1032,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_GetDrawMode(FPDF_PAGEOBJECT path,
 // and used to scale, rotate, shear and translate the path.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_GetMatrix(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_GetMatrix(FPDF_PAGEOBJECT path,
                                                        FS_MATRIX* matrix);
 
 // Experimental API.
@@ -1030,7 +1047,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_GetMatrix(FPDF_PAGEOBJECT path,
 // and can be used to scale, rotate, shear and translate the path.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_SetMatrix(FPDF_PAGEOBJECT path,
+ FPDF_BOOL  FPDFPath_SetMatrix(FPDF_PAGEOBJECT path,
                                                        const FS_MATRIX* matrix);
 
 // Create a new text object using one of the standard PDF fonts.
@@ -1040,7 +1057,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPath_SetMatrix(FPDF_PAGEOBJECT path,
 // font_size  - the font size for the new text object.
 //
 // Returns a handle to a new text object, or NULL on failure
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV
+ FPDF_PAGEOBJECT 
 FPDFPageObj_NewTextObj(FPDF_DOCUMENT document,
                        FPDF_BYTESTRING font,
                        float font_size);
@@ -1051,7 +1068,7 @@ FPDFPageObj_NewTextObj(FPDF_DOCUMENT document,
 // text         - the UTF-16LE encoded string containing the text to be added.
 //
 // Returns TRUE on success
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFText_SetText(FPDF_PAGEOBJECT text_object, FPDF_WIDESTRING text);
 
 // Returns a font object loaded from a stream of data. The font is loaded
@@ -1067,7 +1084,7 @@ FPDFText_SetText(FPDF_PAGEOBJECT text_object, FPDF_WIDESTRING text);
 // The loaded font can be closed using FPDFFont_Close.
 //
 // Returns NULL on failure
-FPDF_EXPORT FPDF_FONT FPDF_CALLCONV FPDFText_LoadFont(FPDF_DOCUMENT document,
+ FPDF_FONT  FPDFText_LoadFont(FPDF_DOCUMENT document,
                                                       const uint8_t* data,
                                                       uint32_t size,
                                                       int font_type,
@@ -1084,7 +1101,7 @@ FPDF_EXPORT FPDF_FONT FPDF_CALLCONV FPDFText_LoadFont(FPDF_DOCUMENT document,
 // The loaded font can be closed using FPDFFont_Close.
 //
 // Returns NULL on failure.
-FPDF_EXPORT FPDF_FONT FPDF_CALLCONV
+ FPDF_FONT 
 FPDFText_LoadStandardFont(FPDF_DOCUMENT document, FPDF_BYTESTRING font);
 
 // Experimental API.
@@ -1099,7 +1116,7 @@ FPDFText_LoadStandardFont(FPDF_DOCUMENT document, FPDF_BYTESTRING font);
 // and used to scale, rotate, shear and translate the text.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFTextObj_GetMatrix(FPDF_PAGEOBJECT text,
+ FPDF_BOOL  FPDFTextObj_GetMatrix(FPDF_PAGEOBJECT text,
                                                           FS_MATRIX* matrix);
 
 // Experimental API.
@@ -1109,12 +1126,12 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFTextObj_GetMatrix(FPDF_PAGEOBJECT text,
 //
 // Returns the font size of the text object, measured in points (about 1/72
 // inch) on success; 0 on failure.
-FPDF_EXPORT float FPDF_CALLCONV FPDFTextObj_GetFontSize(FPDF_PAGEOBJECT text);
+ float  FPDFTextObj_GetFontSize(FPDF_PAGEOBJECT text);
 
 // Close a loaded PDF font.
 //
 // font   - Handle to the loaded font.
-FPDF_EXPORT void FPDF_CALLCONV FPDFFont_Close(FPDF_FONT font);
+ void  FPDFFont_Close(FPDF_FONT font);
 
 // Create a new text object using a loaded font.
 //
@@ -1123,7 +1140,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFFont_Close(FPDF_FONT font);
 // font_size  - the font size for the new text object.
 //
 // Returns a handle to a new text object, or NULL on failure
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV
+ FPDF_PAGEOBJECT 
 FPDFPageObj_CreateTextObj(FPDF_DOCUMENT document,
                           FPDF_FONT font,
                           float font_size);
@@ -1135,7 +1152,7 @@ FPDFPageObj_CreateTextObj(FPDF_DOCUMENT document,
 //
 // Returns one of the known FPDF_TEXT_RENDERMODE enum values on success,
 // FPDF_TEXTRENDERMODE_UNKNOWN on error.
-FPDF_EXPORT FPDF_TEXT_RENDERMODE FPDF_CALLCONV
+ FPDF_TEXT_RENDERMODE 
 FPDFTextObj_GetTextRenderMode(FPDF_PAGEOBJECT text);
 
 // Experimental API.
@@ -1146,7 +1163,7 @@ FPDFTextObj_GetTextRenderMode(FPDF_PAGEOBJECT text);
 //                FPDF_TEXTRENDERMODE_UNKNOWN).
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFTextObj_SetTextRenderMode(FPDF_PAGEOBJECT text,
                               FPDF_TEXT_RENDERMODE render_mode);
 
@@ -1163,7 +1180,7 @@ FPDFTextObj_SetTextRenderMode(FPDF_PAGEOBJECT text,
 // Regardless of the platform, the |buffer| is always in UTF-8 encoding.
 // If |length| is less than the returned length, or |buffer| is NULL, |buffer|
 // will not be modified.
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFTextObj_GetFontName(FPDF_PAGEOBJECT text,
                         void* buffer,
                         unsigned long length);
@@ -1182,7 +1199,7 @@ FPDFTextObj_GetFontName(FPDF_PAGEOBJECT text,
 // Regardless of the platform, the |buffer| is always in UTF-16LE encoding.
 // If |length| is less than the returned length, or |buffer| is NULL, |buffer|
 // will not be modified.
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFTextObj_GetText(FPDF_PAGEOBJECT text_object,
                     FPDF_TEXTPAGE text_page,
                     void* buffer,
@@ -1194,7 +1211,7 @@ FPDFTextObj_GetText(FPDF_PAGEOBJECT text_object,
 //   form_object - handle to a form object.
 //
 // Returns the number of objects in |form_object| on success, -1 on error.
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFFormObj_CountObjects(FPDF_PAGEOBJECT form_object);
 
 // Experimental API.
@@ -1204,7 +1221,7 @@ FPDFFormObj_CountObjects(FPDF_PAGEOBJECT form_object);
 //   index       - the 0-based index of a page object.
 //
 // Returns the handle to the page object, or NULL on error.
-FPDF_EXPORT FPDF_PAGEOBJECT FPDF_CALLCONV
+ FPDF_PAGEOBJECT 
 FPDFFormObj_GetObject(FPDF_PAGEOBJECT form_object, unsigned long index);
 
 // Experimental API.
@@ -1219,11 +1236,11 @@ FPDFFormObj_GetObject(FPDF_PAGEOBJECT form_object, unsigned long index);
 // and used to scale, rotate, shear and translate the form object.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFFormObj_GetMatrix(FPDF_PAGEOBJECT form_object, FS_MATRIX* matrix);
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//}  // extern "C"
+//#endif  // __cplusplus
 
-#endif  // PUBLIC_FPDF_EDIT_H_
+//#endif  // PUBLIC_FPDF_EDIT_H_

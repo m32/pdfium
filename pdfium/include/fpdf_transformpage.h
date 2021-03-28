@@ -4,15 +4,15 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_TRANSFORMPAGE_H_
-#define PUBLIC_FPDF_TRANSFORMPAGE_H_
+//#ifndef PUBLIC_FPDF_TRANSFORMPAGE_H_
+//#define PUBLIC_FPDF_TRANSFORMPAGE_H_
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 /**
  * Set "MediaBox" entry to the page dictionary.
@@ -23,7 +23,7 @@ extern "C" {
  * right  - The right of the rectangle.
  * top    - The top of the rectangle.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetMediaBox(FPDF_PAGE page,
+ void  FPDFPage_SetMediaBox(FPDF_PAGE page,
                                                     float left,
                                                     float bottom,
                                                     float right,
@@ -38,7 +38,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetMediaBox(FPDF_PAGE page,
  * right  - The right of the rectangle.
  * top    - The top of the rectangle.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetCropBox(FPDF_PAGE page,
+ void  FPDFPage_SetCropBox(FPDF_PAGE page,
                                                    float left,
                                                    float bottom,
                                                    float right,
@@ -53,7 +53,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetCropBox(FPDF_PAGE page,
  * right  - The right of the rectangle.
  * top    - The top of the rectangle.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetBleedBox(FPDF_PAGE page,
+ void  FPDFPage_SetBleedBox(FPDF_PAGE page,
                                                     float left,
                                                     float bottom,
                                                     float right,
@@ -68,7 +68,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetBleedBox(FPDF_PAGE page,
  * right  - The right of the rectangle.
  * top    - The top of the rectangle.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetTrimBox(FPDF_PAGE page,
+ void  FPDFPage_SetTrimBox(FPDF_PAGE page,
                                                    float left,
                                                    float bottom,
                                                    float right,
@@ -83,7 +83,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetTrimBox(FPDF_PAGE page,
  * right  - The right of the rectangle.
  * top    - The top of the rectangle.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetArtBox(FPDF_PAGE page,
+ void  FPDFPage_SetArtBox(FPDF_PAGE page,
                                                   float left,
                                                   float bottom,
                                                   float right,
@@ -101,7 +101,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFPage_SetArtBox(FPDF_PAGE page,
  * On success, return true and write to the out parameters. Otherwise return
  * false and leave the out parameters unmodified.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetMediaBox(FPDF_PAGE page,
+ FPDF_BOOL  FPDFPage_GetMediaBox(FPDF_PAGE page,
                                                          float* left,
                                                          float* bottom,
                                                          float* right,
@@ -119,7 +119,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetMediaBox(FPDF_PAGE page,
  * On success, return true and write to the out parameters. Otherwise return
  * false and leave the out parameters unmodified.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetCropBox(FPDF_PAGE page,
+ FPDF_BOOL  FPDFPage_GetCropBox(FPDF_PAGE page,
                                                         float* left,
                                                         float* bottom,
                                                         float* right,
@@ -137,7 +137,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetCropBox(FPDF_PAGE page,
  * On success, return true and write to the out parameters. Otherwise return
  * false and leave the out parameters unmodified.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetBleedBox(FPDF_PAGE page,
+ FPDF_BOOL  FPDFPage_GetBleedBox(FPDF_PAGE page,
                                                          float* left,
                                                          float* bottom,
                                                          float* right,
@@ -155,7 +155,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetBleedBox(FPDF_PAGE page,
  * On success, return true and write to the out parameters. Otherwise return
  * false and leave the out parameters unmodified.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetTrimBox(FPDF_PAGE page,
+ FPDF_BOOL  FPDFPage_GetTrimBox(FPDF_PAGE page,
                                                         float* left,
                                                         float* bottom,
                                                         float* right,
@@ -173,7 +173,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetTrimBox(FPDF_PAGE page,
  * On success, return true and write to the out parameters. Otherwise return
  * false and leave the out parameters unmodified.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetArtBox(FPDF_PAGE page,
+ FPDF_BOOL  FPDFPage_GetArtBox(FPDF_PAGE page,
                                                        float* left,
                                                        float* bottom,
                                                        float* right,
@@ -194,7 +194,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFPage_GetArtBox(FPDF_PAGE page,
  * matrix      - Transform matrix.
  * clipRect    - Clipping rectangle.
  */
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFPage_TransFormWithClip(FPDF_PAGE page,
                            const FS_MATRIX* matrix,
                            const FS_RECTF* clipRect);
@@ -211,7 +211,7 @@ FPDFPage_TransFormWithClip(FPDF_PAGE page,
  * e  - The coefficient "e" of the matrix.
  * f  - The coefficient "f" of the matrix.
  */
-FPDF_EXPORT void FPDF_CALLCONV
+ void 
 FPDFPageObj_TransformClipPath(FPDF_PAGEOBJECT page_object,
                               double a,
                               double b,
@@ -229,7 +229,7 @@ FPDFPageObj_TransformClipPath(FPDF_PAGEOBJECT page_object,
 // Returns the handle to the clip path, or NULL on failure. The caller does not
 // take ownership of the returned FPDF_CLIPPATH. Instead, it remains valid until
 // FPDF_ClosePage() is called for the page containing |page_object|.
-FPDF_EXPORT FPDF_CLIPPATH FPDF_CALLCONV
+ FPDF_CLIPPATH 
 FPDFPageObj_GetClipPath(FPDF_PAGEOBJECT page_object);
 
 // Experimental API.
@@ -238,7 +238,7 @@ FPDFPageObj_GetClipPath(FPDF_PAGEOBJECT page_object);
 //   clip_path - handle to a clip_path.
 //
 // Returns the number of objects in |clip_path| or -1 on failure.
-FPDF_EXPORT int FPDF_CALLCONV FPDFClipPath_CountPaths(FPDF_CLIPPATH clip_path);
+ int  FPDFClipPath_CountPaths(FPDF_CLIPPATH clip_path);
 
 // Experimental API.
 // Get number of segments inside one path of |clip_path|.
@@ -247,7 +247,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFClipPath_CountPaths(FPDF_CLIPPATH clip_path);
 //   path_index - index into the array of paths of the clip path.
 //
 // Returns the number of segments or -1 on failure.
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFClipPath_CountPathSegments(FPDF_CLIPPATH clip_path, int path_index);
 
 // Experimental API.
@@ -260,7 +260,7 @@ FPDFClipPath_CountPathSegments(FPDF_CLIPPATH clip_path, int path_index);
 // Returns the handle to the segment, or NULL on failure. The caller does not
 // take ownership of the returned FPDF_PATHSEGMENT. Instead, it remains valid
 // until FPDF_ClosePage() is called for the page containing |clip_path|.
-FPDF_EXPORT FPDF_PATHSEGMENT FPDF_CALLCONV
+ FPDF_PATHSEGMENT 
 FPDFClipPath_GetPathSegment(FPDF_CLIPPATH clip_path,
                             int path_index,
                             int segment_index);
@@ -276,7 +276,7 @@ FPDFClipPath_GetPathSegment(FPDF_CLIPPATH clip_path,
  * right  - The right of the clip box.
  * top    - The top of the clip box.
  */
-FPDF_EXPORT FPDF_CLIPPATH FPDF_CALLCONV FPDF_CreateClipPath(float left,
+ FPDF_CLIPPATH  FPDF_CreateClipPath(float left,
                                                             float bottom,
                                                             float right,
                                                             float top);
@@ -286,7 +286,7 @@ FPDF_EXPORT FPDF_CLIPPATH FPDF_CALLCONV FPDF_CreateClipPath(float left,
  *
  * clipPath - A handle to the clip path. It will be invalid after this call.
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDF_DestroyClipPath(FPDF_CLIPPATH clipPath);
+ void  FPDF_DestroyClipPath(FPDF_CLIPPATH clipPath);
 
 /**
  * Clip the page content, the page content that outside the clipping region
@@ -298,11 +298,11 @@ FPDF_EXPORT void FPDF_CALLCONV FPDF_DestroyClipPath(FPDF_CLIPPATH clipPath);
  * page        - A page handle.
  * clipPath    - A handle to the clip path. (Does not take ownership.)
  */
-FPDF_EXPORT void FPDF_CALLCONV FPDFPage_InsertClipPath(FPDF_PAGE page,
+ void  FPDFPage_InsertClipPath(FPDF_PAGE page,
                                                        FPDF_CLIPPATH clipPath);
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
-#endif  // PUBLIC_FPDF_TRANSFORMPAGE_H_
+//#endif  // PUBLIC_FPDF_TRANSFORMPAGE_H_

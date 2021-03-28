@@ -24,6 +24,8 @@
 #define PDFACTION_URI 3
 // Launch an application or open a file.
 #define PDFACTION_LAUNCH 4
+// Go to a destination in an embedded file.
+#define PDFACTION_EMBEDDEDGOTO 5
 
 // View destination fit types. See pdfmark reference v9, page 48.
 #define PDFDEST_VIEW_UNKNOWN_MODE 0
@@ -35,6 +37,13 @@
 #define PDFDEST_VIEW_FITB 6
 #define PDFDEST_VIEW_FITBH 7
 #define PDFDEST_VIEW_FITBV 8
+
+// The file identifier entry type. See section 14.4 "File Identifiers" of the
+// ISO 32000-1 standard.
+typedef enum {
+  FILEIDTYPE_PERMANENT = 0,
+  FILEIDTYPE_CHANGING = 1
+} FPDF_FILEIDTYPE;
 
 typedef struct _FS_QUADPOINTSF {
   FS_FLOAT x1;
@@ -55,7 +64,7 @@ typedef struct _FS_QUADPOINTSF {
 //
 // Returns a handle to the first child of |bookmark| or the first top-level
 // bookmark item. NULL if no child or top-level bookmark found.
-extern FPDF_BOOKMARK 
+ FPDF_BOOKMARK 
 FPDFBookmark_GetFirstChild(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 
 // Get the next sibling of |bookmark|.
@@ -65,7 +74,7 @@ FPDFBookmark_GetFirstChild(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 //
 // Returns a handle to the next sibling of |bookmark|, or NULL if this is the
 // last bookmark at this level.
-extern FPDF_BOOKMARK 
+ FPDF_BOOKMARK 
 FPDFBookmark_GetNextSibling(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 
 // Get the title of |bookmark|.
@@ -81,7 +90,7 @@ FPDFBookmark_GetNextSibling(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 // Regardless of the platform, the |buffer| is always in UTF-16LE encoding. The
 // string is terminated by a UTF16 NUL character. If |buflen| is less than the
 // required length, or |buffer| is NULL, |buffer| will not be modified.
-extern unsigned long 
+ unsigned long 
 FPDFBookmark_GetTitle(FPDF_BOOKMARK bookmark,
                       void* buffer,
                       unsigned long buflen);
@@ -95,7 +104,7 @@ FPDFBookmark_GetTitle(FPDF_BOOKMARK bookmark,
 //
 // FPDFBookmark_Find() will always return the first bookmark found even if
 // multiple bookmarks have the same |title|.
-extern FPDF_BOOKMARK 
+ FPDF_BOOKMARK 
 FPDFBookmark_Find(FPDF_DOCUMENT document, FPDF_WIDESTRING title);
 
 // Get the destination associated with |bookmark|.
@@ -105,7 +114,7 @@ FPDFBookmark_Find(FPDF_DOCUMENT document, FPDF_WIDESTRING title);
 //
 // Returns the handle to the destination data,  NULL if no destination is
 // associated with |bookmark|.
-extern FPDF_DEST 
+ FPDF_DEST 
 FPDFBookmark_GetDest(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 
 // Get the action associated with |bookmark|.
@@ -115,7 +124,7 @@ FPDFBookmark_GetDest(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 // Returns the handle to the action data, or NULL if no action is associated
 // with |bookmark|. When NULL is returned, FPDFBookmark_GetDest() should be
 // called to get the |bookmark| destination data.
-extern FPDF_ACTION 
+ FPDF_ACTION 
 FPDFBookmark_GetAction(FPDF_BOOKMARK bookmark);
 
 // Get the type of |action|.
@@ -128,7 +137,7 @@ FPDFBookmark_GetAction(FPDF_BOOKMARK bookmark);
 //   PDFACTION_REMOTEGOTO
 //   PDFACTION_URI
 //   PDFACTION_LAUNCH
-extern unsigned long  FPDFAction_GetType(FPDF_ACTION action);
+ unsigned long  FPDFAction_GetType(FPDF_ACTION action);
 
 // Get the destination of |action|.
 //
@@ -142,7 +151,7 @@ extern unsigned long  FPDFAction_GetType(FPDF_ACTION action);
 // In the case of |PDFACTION_REMOTEGOTO|, you must first call
 // FPDFAction_GetFilePath(), then load the document at that path, then pass
 // the document handle from that document as |document| to FPDFAction_GetDest().
-extern FPDF_DEST  FPDFAction_GetDest(FPDF_DOCUMENT document,
+ FPDF_DEST  FPDFAction_GetDest(FPDF_DOCUMENT document,
                                                        FPDF_ACTION action);
 
 // Get the file path of |action|.
@@ -159,7 +168,7 @@ extern FPDF_DEST  FPDFAction_GetDest(FPDF_DOCUMENT document,
 // Regardless of the platform, the |buffer| is always in UTF-8 encoding.
 // If |buflen| is less than the returned length, or |buffer| is NULL, |buffer|
 // will not be modified.
-extern unsigned long 
+ unsigned long 
 FPDFAction_GetFilePath(FPDF_ACTION action, void* buffer, unsigned long buflen);
 
 // Get the URI path of |action|.
@@ -175,7 +184,7 @@ FPDFAction_GetFilePath(FPDF_ACTION action, void* buffer, unsigned long buflen);
 //
 // The |buffer| is always encoded in 7-bit ASCII. If |buflen| is less than the
 // returned length, or |buffer| is NULL, |buffer| will not be modified.
-extern unsigned long 
+ unsigned long 
 FPDFAction_GetURIPath(FPDF_DOCUMENT document,
                       FPDF_ACTION action,
                       void* buffer,
@@ -187,11 +196,11 @@ FPDFAction_GetURIPath(FPDF_DOCUMENT document,
 //   dest     - handle to the destination.
 //
 // Returns the 0-based page index containing |dest|. Returns -1 on error.
-extern int  FPDFDest_GetDestPageIndex(FPDF_DOCUMENT document,
+ int  FPDFDest_GetDestPageIndex(FPDF_DOCUMENT document,
                                                         FPDF_DEST dest);
 
+// Experimental API.
 // Get the view (fit type) specified by |dest|.
-// Experimental API. Subject to change.
 //
 //   dest         - handle to the destination.
 //   pNumParams   - receives the number of view parameters, which is at most 4.
@@ -199,7 +208,7 @@ extern int  FPDFDest_GetDestPageIndex(FPDF_DOCUMENT document,
 //                  FS_FLOATs long.
 // Returns one of the PDFDEST_VIEW_* constants, PDFDEST_VIEW_UNKNOWN_MODE if
 // |dest| does not specify a view.
-extern unsigned long 
+ unsigned long 
 FPDFDest_GetView(FPDF_DEST dest, unsigned long* pNumParams, FS_FLOAT* pParams);
 
 // Get the (x, y, zoom) location of |dest| in the destination page, if the
@@ -216,7 +225,7 @@ FPDFDest_GetView(FPDF_DEST dest, unsigned long* pNumParams, FS_FLOAT* pParams);
 //
 // Note the [x, y, zoom] values are only set if the corresponding hasXVal,
 // hasYVal or hasZoomVal flags are true.
-extern FPDF_BOOL 
+ FPDF_BOOL 
 FPDFDest_GetLocationInPage(FPDF_DEST dest,
                            FPDF_BOOL* hasXVal,
                            FPDF_BOOL* hasYVal,
@@ -235,7 +244,7 @@ FPDFDest_GetLocationInPage(FPDF_DEST dest,
 //
 // You can convert coordinates from screen coordinates to page coordinates using
 // FPDF_DeviceToPage().
-extern FPDF_LINK  FPDFLink_GetLinkAtPoint(FPDF_PAGE page,
+ FPDF_LINK  FPDFLink_GetLinkAtPoint(FPDF_PAGE page,
                                                             double x,
                                                             double y);
 
@@ -250,7 +259,7 @@ extern FPDF_LINK  FPDFLink_GetLinkAtPoint(FPDF_PAGE page,
 //
 // You can convert coordinates from screen coordinates to page coordinates using
 // FPDF_DeviceToPage().
-extern int  FPDFLink_GetLinkZOrderAtPoint(FPDF_PAGE page,
+ int  FPDFLink_GetLinkZOrderAtPoint(FPDF_PAGE page,
                                                             double x,
                                                             double y);
 
@@ -262,7 +271,7 @@ extern int  FPDFLink_GetLinkZOrderAtPoint(FPDF_PAGE page,
 // Returns a handle to the destination, or NULL if there is no destination
 // associated with the link. In this case, you should call FPDFLink_GetAction()
 // to retrieve the action associated with |link|.
-extern FPDF_DEST  FPDFLink_GetDest(FPDF_DOCUMENT document,
+ FPDF_DEST  FPDFLink_GetDest(FPDF_DOCUMENT document,
                                                      FPDF_LINK link);
 
 // Get action info for |link|.
@@ -270,7 +279,7 @@ extern FPDF_DEST  FPDFLink_GetDest(FPDF_DOCUMENT document,
 //   link - handle to the link.
 //
 // Returns a handle to the action associated to |link|, or NULL if no action.
-extern FPDF_ACTION  FPDFLink_GetAction(FPDF_LINK link);
+ FPDF_ACTION  FPDFLink_GetAction(FPDF_LINK link);
 
 // Enumerates all the link annotations in |page|.
 //
@@ -280,9 +289,20 @@ extern FPDF_ACTION  FPDFLink_GetAction(FPDF_LINK link);
 //   link_annot - the link handle for |startPos|.
 //
 // Returns TRUE on success.
-extern FPDF_BOOL  FPDFLink_Enumerate(FPDF_PAGE page,
+ FPDF_BOOL  FPDFLink_Enumerate(FPDF_PAGE page,
                                                        int* start_pos,
                                                        FPDF_LINK* link_annot);
+
+// Experimental API.
+// Gets FPDF_ANNOTATION object for |link_annot|.
+//
+//   page       - handle to the page in which FPDF_LINK object is present.
+//   link_annot - handle to link annotation.
+//
+// Returns FPDF_ANNOTATION from the FPDF_LINK and NULL on failure,
+// if the input link annot or page is NULL.
+ FPDF_ANNOTATION 
+FPDFLink_GetAnnot(FPDF_PAGE page, FPDF_LINK link_annot);
 
 // Get the rectangle for |link_annot|.
 //
@@ -290,7 +310,7 @@ extern FPDF_BOOL  FPDFLink_Enumerate(FPDF_PAGE page,
 //   rect       - the annotation rectangle.
 //
 // Returns true on success.
-extern FPDF_BOOL  FPDFLink_GetAnnotRect(FPDF_LINK link_annot,
+ FPDF_BOOL  FPDFLink_GetAnnotRect(FPDF_LINK link_annot,
                                                           FS_RECTF* rect);
 
 // Get the count of quadrilateral points to the |link_annot|.
@@ -298,7 +318,7 @@ extern FPDF_BOOL  FPDFLink_GetAnnotRect(FPDF_LINK link_annot,
 //   link_annot - handle to the link annotation.
 //
 // Returns the count of quadrilateral points.
-extern int  FPDFLink_CountQuadPoints(FPDF_LINK link_annot);
+ int  FPDFLink_CountQuadPoints(FPDF_LINK link_annot);
 
 // Get the quadrilateral points for the specified |quad_index| in |link_annot|.
 //
@@ -307,10 +327,42 @@ extern int  FPDFLink_CountQuadPoints(FPDF_LINK link_annot);
 //   quad_points - receives the quadrilateral points.
 //
 // Returns true on success.
-extern FPDF_BOOL 
+ FPDF_BOOL 
 FPDFLink_GetQuadPoints(FPDF_LINK link_annot,
                        int quad_index,
                        FS_QUADPOINTSF* quad_points);
+
+// Experimental API
+// Gets an additional-action from |page|.
+//
+//   page      - handle to the page, as returned by FPDF_LoadPage().
+//   aa_type   - the type of the page object's addtional-action, defined
+//               in public/fpdf_formfill.h
+//
+//   Returns the handle to the action data, or NULL if there is no
+//   additional-action of type |aa_type|.
+ FPDF_ACTION  FPDF_GetPageAAction(FPDF_PAGE page,
+                                                          int aa_type);
+
+// Experimental API.
+// Get the file identifer defined in the trailer of |document|.
+//
+//   document - handle to the document.
+//   id_type  - the file identifier type to retrieve.
+//   buffer   - a buffer for the file identifier. May be NULL.
+//   buflen   - the length of the buffer, in bytes. May be 0.
+//
+// Returns the number of bytes in the file identifier, including the NUL
+// terminator.
+//
+// The |buffer| is always a byte string. The |buffer| is followed by a NUL
+// terminator.  If |buflen| is less than the returned length, or |buffer| is
+// NULL, |buffer| will not be modified.
+ unsigned long 
+FPDF_GetFileIdentifier(FPDF_DOCUMENT document,
+                       FPDF_FILEIDTYPE id_type,
+                       void* buffer,
+                       unsigned long buflen);
 
 // Get meta-data |tag| content from |document|.
 //
@@ -333,7 +385,7 @@ FPDFLink_GetQuadPoints(FPDF_LINK link_annot,
 // For linearized files, FPDFAvail_IsFormAvail must be called before this, and
 // it must have returned PDF_FORM_AVAIL or PDF_FORM_NOTEXIST. Before that, there
 // is no guarantee the metadata has been loaded.
-extern unsigned long  FPDF_GetMetaText(FPDF_DOCUMENT document,
+ unsigned long  FPDF_GetMetaText(FPDF_DOCUMENT document,
                                                          FPDF_BYTESTRING tag,
                                                          void* buffer,
                                                          unsigned long buflen);
@@ -350,7 +402,7 @@ extern unsigned long  FPDF_GetMetaText(FPDF_DOCUMENT document,
 // The |buffer| is always encoded in UTF-16LE. The |buffer| is followed by two
 // bytes of zeros indicating the end of the string.  If |buflen| is less than
 // the returned length, or |buffer| is NULL, |buffer| will not be modified.
-extern unsigned long 
+ unsigned long 
 FPDF_GetPageLabel(FPDF_DOCUMENT document,
                   int page_index,
                   void* buffer,

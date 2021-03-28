@@ -4,16 +4,16 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_SAVE_H_
-#define PUBLIC_FPDF_SAVE_H_
+//#ifndef PUBLIC_FPDF_SAVE_H_
+//#define PUBLIC_FPDF_SAVE_H_
 
 // clang-format off
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 // Structure for custom file write
 typedef struct FPDF_FILEWRITE_ {
@@ -56,7 +56,7 @@ typedef struct FPDF_FILEWRITE_ {
 // Return value:
 //          TRUE for succeed, FALSE for failed.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_SaveAsCopy(FPDF_DOCUMENT document,
+ FPDF_BOOL  FPDF_SaveAsCopy(FPDF_DOCUMENT document,
                                                     FPDF_FILEWRITE* pFileWrite,
                                                     FPDF_DWORD flags);
 
@@ -72,14 +72,14 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDF_SaveAsCopy(FPDF_DOCUMENT document,
 // Return value:
 //          TRUE if succeed, FALSE if failed.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDF_SaveWithVersion(FPDF_DOCUMENT document,
                      FPDF_FILEWRITE* pFileWrite,
                      FPDF_DWORD flags,
                      int fileVersion);
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
-#endif  // PUBLIC_FPDF_SAVE_H_
+//#endif  // PUBLIC_FPDF_SAVE_H_

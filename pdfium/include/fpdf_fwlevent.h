@@ -4,15 +4,15 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_FWLEVENT_H_
-#define PUBLIC_FPDF_FWLEVENT_H_
+//#ifndef PUBLIC_FPDF_FWLEVENT_H_
+//#define PUBLIC_FPDF_FWLEVENT_H_
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//extern "C" {
+//#endif  // __cplusplus
 
 // Key flags.
 typedef enum {
@@ -200,8 +200,8 @@ typedef enum {
   FWL_VKEY_Unknown = 0,
 } FWL_VKEYCODE;
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//}  // extern "C"
+//#endif  // __cplusplus
 
-#endif  // PUBLIC_FPDF_FWLEVENT_H_
+//#endif  // PUBLIC_FPDF_FWLEVENT_H_

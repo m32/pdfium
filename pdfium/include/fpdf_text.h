@@ -4,17 +4,17 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_TEXT_H_
-#define PUBLIC_FPDF_TEXT_H_
+//#ifndef PUBLIC_FPDF_TEXT_H_
+//#define PUBLIC_FPDF_TEXT_H_
 
 // clang-format off
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
 // Exported Functions
-#ifdef __cplusplus
-extern "C" {
-#endif
+//#ifdef __cplusplus
+//extern "C" {
+//#endif
 
 // Function: FPDFText_LoadPage
 //          Prepare information about all characters in a page.
@@ -28,7 +28,7 @@ extern "C" {
 //          Application must call FPDFText_ClosePage to release the text page
 //          information.
 //
-FPDF_EXPORT FPDF_TEXTPAGE FPDF_CALLCONV FPDFText_LoadPage(FPDF_PAGE page);
+ FPDF_TEXTPAGE  FPDFText_LoadPage(FPDF_PAGE page);
 
 // Function: FPDFText_ClosePage
 //          Release all resources allocated for a text page information
@@ -39,7 +39,7 @@ FPDF_EXPORT FPDF_TEXTPAGE FPDF_CALLCONV FPDFText_LoadPage(FPDF_PAGE page);
 // Return Value:
 //          None.
 //
-FPDF_EXPORT void FPDF_CALLCONV FPDFText_ClosePage(FPDF_TEXTPAGE text_page);
+ void  FPDFText_ClosePage(FPDF_TEXTPAGE text_page);
 
 // Function: FPDFText_CountChars
 //          Get number of characters in a page.
@@ -57,7 +57,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFText_ClosePage(FPDF_TEXTPAGE text_page);
 //          first character in the page
 //          has an index value of zero.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_CountChars(FPDF_TEXTPAGE text_page);
+ int  FPDFText_CountChars(FPDF_TEXTPAGE text_page);
 
 // Function: FPDFText_GetUnicode
 //          Get Unicode of a character in a page.
@@ -71,7 +71,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_CountChars(FPDF_TEXTPAGE text_page);
 //          convert to Unicode,
 //          the return value will be zero.
 //
-FPDF_EXPORT unsigned int FPDF_CALLCONV
+ unsigned int 
 FPDFText_GetUnicode(FPDF_TEXTPAGE text_page, int index);
 
 // Function: FPDFText_GetFontSize
@@ -85,7 +85,7 @@ FPDFText_GetUnicode(FPDF_TEXTPAGE text_page, int index);
 //          1/72 inch). This is the typographic size of the font (so called
 //          "em size").
 //
-FPDF_EXPORT double FPDF_CALLCONV FPDFText_GetFontSize(FPDF_TEXTPAGE text_page,
+ double  FPDFText_GetFontSize(FPDF_TEXTPAGE text_page,
                                                       int index);
 
 // Experimental API.
@@ -107,7 +107,7 @@ FPDF_EXPORT double FPDF_CALLCONV FPDFText_GetFontSize(FPDF_TEXTPAGE text_page,
 //          set to the font flags. |buffer| is in UTF-8 encoding. Return 0 on
 //          failure.
 //
-FPDF_EXPORT unsigned long FPDF_CALLCONV
+ unsigned long 
 FPDFText_GetFontInfo(FPDF_TEXTPAGE text_page,
                      int index,
                      void* buffer,
@@ -126,7 +126,7 @@ FPDFText_GetFontInfo(FPDF_TEXTPAGE text_page,
 //          |text_page| is invalid, if |index| is out of bounds, or if the
 //          character's text object is undefined, return -1.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetFontWeight(FPDF_TEXTPAGE text_page,
+ int  FPDFText_GetFontWeight(FPDF_TEXTPAGE text_page,
                                                      int index);
 
 // Experimental API.
@@ -142,7 +142,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetFontWeight(FPDF_TEXTPAGE text_page,
 //          of bounds, or if the text object is undefined, then return
 //          FPDF_TEXTRENDERMODE_UNKNOWN.
 //
-FPDF_EXPORT FPDF_TEXT_RENDERMODE FPDF_CALLCONV
+ FPDF_TEXT_RENDERMODE 
 FPDFText_GetTextRenderMode(FPDF_TEXTPAGE text_page, int index);
 
 // Experimental API.
@@ -164,7 +164,7 @@ FPDFText_GetTextRenderMode(FPDF_TEXTPAGE text_page, int index);
 //          Whether the call succeeded. If false, |R|, |G|, |B| and |A| are
 //          unchanged.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFText_GetFillColor(FPDF_TEXTPAGE text_page,
                       int index,
                       unsigned int* R,
@@ -191,7 +191,7 @@ FPDFText_GetFillColor(FPDF_TEXTPAGE text_page,
 //          Whether the call succeeded. If false, |R|, |G|, |B| and |A| are
 //          unchanged.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFText_GetStrokeColor(FPDF_TEXTPAGE text_page,
                         int index,
                         unsigned int* R,
@@ -211,7 +211,7 @@ FPDFText_GetStrokeColor(FPDF_TEXTPAGE text_page,
 //          greater or equal to 0. If |text_page| is invalid, or if |index| is
 //          out of bounds, then return -1.
 //
-FPDF_EXPORT float FPDF_CALLCONV FPDFText_GetCharAngle(FPDF_TEXTPAGE text_page,
+ float  FPDFText_GetCharAngle(FPDF_TEXTPAGE text_page,
                                                       int index);
 
 // Function: FPDFText_GetCharBox
@@ -235,7 +235,7 @@ FPDF_EXPORT float FPDF_CALLCONV FPDFText_GetCharAngle(FPDF_TEXTPAGE text_page,
 // Comments:
 //          All positions are measured in PDF "user space".
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetCharBox(FPDF_TEXTPAGE text_page,
+ FPDF_BOOL  FPDFText_GetCharBox(FPDF_TEXTPAGE text_page,
                                                         int index,
                                                         double* left,
                                                         double* right,
@@ -259,7 +259,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetCharBox(FPDF_TEXTPAGE text_page,
 // Comments:
 //          All positions are measured in PDF "user space".
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFText_GetLooseCharBox(FPDF_TEXTPAGE text_page, int index, FS_RECTF* rect);
 
 // Experimental API.
@@ -276,7 +276,7 @@ FPDFText_GetLooseCharBox(FPDF_TEXTPAGE text_page, int index, FS_RECTF* rect);
 //          invalid, or if |index| is out of bounds, or if |matrix| is NULL,
 //          then return FALSE, and |matrix| remains unmodified.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetMatrix(FPDF_TEXTPAGE text_page,
+ FPDF_BOOL  FPDFText_GetMatrix(FPDF_TEXTPAGE text_page,
                                                        int index,
                                                        FS_MATRIX* matrix);
 
@@ -295,7 +295,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetMatrix(FPDF_TEXTPAGE text_page,
 // Comments:
 //          All positions are measured in PDF "user space".
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFText_GetCharOrigin(FPDF_TEXTPAGE text_page,
                        int index,
                        double* x,
@@ -318,7 +318,7 @@ FPDFText_GetCharOrigin(FPDF_TEXTPAGE text_page,
 //          If there is no character at or nearby the point, return value will
 //          be -1. If an error occurs, -3 will be returned.
 //
-FPDF_EXPORT int FPDF_CALLCONV
+ int 
 FPDFText_GetCharIndexAtPos(FPDF_TEXTPAGE text_page,
                            double x,
                            double y,
@@ -342,7 +342,7 @@ FPDFText_GetCharIndexAtPos(FPDF_TEXTPAGE text_page,
 // Comments:
 //          This function ignores characters without unicode information.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetText(FPDF_TEXTPAGE text_page,
+ int  FPDFText_GetText(FPDF_TEXTPAGE text_page,
                                                int start_index,
                                                int count,
                                                unsigned short* result);
@@ -363,7 +363,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetText(FPDF_TEXTPAGE text_page,
 //          merge small character boxes into bigger one if those characters
 //          are on the same line and use same font settings.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_CountRects(FPDF_TEXTPAGE text_page,
+ int  FPDFText_CountRects(FPDF_TEXTPAGE text_page,
                                                   int start_index,
                                                   int count);
 
@@ -389,7 +389,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_CountRects(FPDF_TEXTPAGE text_page,
 //          |rect_index| is out of bounds, then return FALSE and set the out
 //          parameters to 0.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetRect(FPDF_TEXTPAGE text_page,
+ FPDF_BOOL  FPDFText_GetRect(FPDF_TEXTPAGE text_page,
                                                      int rect_index,
                                                      double* left,
                                                      double* top,
@@ -420,7 +420,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_GetRect(FPDF_TEXTPAGE text_page,
 //          If the buffer is too small, as much text as will fit is copied into
 //          it.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetBoundedText(FPDF_TEXTPAGE text_page,
+ int  FPDFText_GetBoundedText(FPDF_TEXTPAGE text_page,
                                                       double left,
                                                       double top,
                                                       double right,
@@ -449,7 +449,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetBoundedText(FPDF_TEXTPAGE text_page,
 //          A handle for the search context. FPDFText_FindClose must be called
 //          to release this handle.
 //
-FPDF_EXPORT FPDF_SCHHANDLE FPDF_CALLCONV
+ FPDF_SCHHANDLE 
 FPDFText_FindStart(FPDF_TEXTPAGE text_page,
                    FPDF_WIDESTRING findwhat,
                    unsigned long flags,
@@ -463,7 +463,7 @@ FPDFText_FindStart(FPDF_TEXTPAGE text_page,
 // Return Value:
 //          Whether a match is found.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_FindNext(FPDF_SCHHANDLE handle);
+ FPDF_BOOL  FPDFText_FindNext(FPDF_SCHHANDLE handle);
 
 // Function: FPDFText_FindPrev
 //          Search in the direction from page end to start.
@@ -473,7 +473,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_FindNext(FPDF_SCHHANDLE handle);
 // Return Value:
 //          Whether a match is found.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_FindPrev(FPDF_SCHHANDLE handle);
+ FPDF_BOOL  FPDFText_FindPrev(FPDF_SCHHANDLE handle);
 
 // Function: FPDFText_GetSchResultIndex
 //          Get the starting character index of the search result.
@@ -483,7 +483,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFText_FindPrev(FPDF_SCHHANDLE handle);
 // Return Value:
 //          Index for the starting character.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetSchResultIndex(FPDF_SCHHANDLE handle);
+ int  FPDFText_GetSchResultIndex(FPDF_SCHHANDLE handle);
 
 // Function: FPDFText_GetSchCount
 //          Get the number of matched characters in the search result.
@@ -493,7 +493,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetSchResultIndex(FPDF_SCHHANDLE handle);
 // Return Value:
 //          Number of matched characters.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetSchCount(FPDF_SCHHANDLE handle);
+ int  FPDFText_GetSchCount(FPDF_SCHHANDLE handle);
 
 // Function: FPDFText_FindClose
 //          Release a search context.
@@ -503,7 +503,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFText_GetSchCount(FPDF_SCHHANDLE handle);
 // Return Value:
 //          None.
 //
-FPDF_EXPORT void FPDF_CALLCONV FPDFText_FindClose(FPDF_SCHHANDLE handle);
+ void  FPDFText_FindClose(FPDF_SCHHANDLE handle);
 
 // Function: FPDFLink_LoadWebLinks
 //          Prepare information about weblinks in a page.
@@ -524,7 +524,7 @@ FPDF_EXPORT void FPDF_CALLCONV FPDFText_FindClose(FPDF_SCHHANDLE handle);
 //
 //          FPDFLink_CloseWebLinks must be called to release resources.
 //
-FPDF_EXPORT FPDF_PAGELINK FPDF_CALLCONV
+ FPDF_PAGELINK 
 FPDFLink_LoadWebLinks(FPDF_TEXTPAGE text_page);
 
 // Function: FPDFLink_CountWebLinks
@@ -534,7 +534,7 @@ FPDFLink_LoadWebLinks(FPDF_TEXTPAGE text_page);
 // Return Value:
 //          Number of detected web links.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFLink_CountWebLinks(FPDF_PAGELINK link_page);
+ int  FPDFLink_CountWebLinks(FPDF_PAGELINK link_page);
 
 // Function: FPDFLink_GetURL
 //          Fetch the URL information for a detected web link.
@@ -555,7 +555,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFLink_CountWebLinks(FPDF_PAGELINK link_page);
 //          If |link_index| does not correspond to a valid link, then the result
 //          is an empty string.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFLink_GetURL(FPDF_PAGELINK link_page,
+ int  FPDFLink_GetURL(FPDF_PAGELINK link_page,
                                               int link_index,
                                               unsigned short* buffer,
                                               int buflen);
@@ -569,7 +569,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFLink_GetURL(FPDF_PAGELINK link_page,
 //          Number of rectangular areas for the link.  If |link_index| does
 //          not correspond to a valid link, then 0 is returned.
 //
-FPDF_EXPORT int FPDF_CALLCONV FPDFLink_CountRects(FPDF_PAGELINK link_page,
+ int  FPDFLink_CountRects(FPDF_PAGELINK link_page,
                                                   int link_index);
 
 // Function: FPDFLink_GetRect
@@ -592,7 +592,7 @@ FPDF_EXPORT int FPDF_CALLCONV FPDFLink_CountRects(FPDF_PAGELINK link_page,
 //          correspond to a valid link, then return FALSE, and the out
 //          parameters remain unmodified.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFLink_GetRect(FPDF_PAGELINK link_page,
+ FPDF_BOOL  FPDFLink_GetRect(FPDF_PAGELINK link_page,
                                                      int link_index,
                                                      int rect_index,
                                                      double* left,
@@ -614,7 +614,7 @@ FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV FPDFLink_GetRect(FPDF_PAGELINK link_page,
 //          not correspond to a valid link, then return FALSE and the out
 //          parameters remain unmodified.
 //
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FPDFLink_GetTextRange(FPDF_PAGELINK link_page,
                       int link_index,
                       int* start_char_index,
@@ -627,10 +627,10 @@ FPDFLink_GetTextRange(FPDF_PAGELINK link_page,
 // Return Value:
 //          None.
 //
-FPDF_EXPORT void FPDF_CALLCONV FPDFLink_CloseWebLinks(FPDF_PAGELINK link_page);
+ void  FPDFLink_CloseWebLinks(FPDF_PAGELINK link_page);
 
-#ifdef __cplusplus
-}
-#endif
+//#ifdef __cplusplus
+//}
+//#endif
 
-#endif  // PUBLIC_FPDF_TEXT_H_
+//#endif  // PUBLIC_FPDF_TEXT_H_

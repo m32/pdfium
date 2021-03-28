@@ -4,17 +4,17 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_EXT_H_
-#define PUBLIC_FPDF_EXT_H_
+//#ifndef PUBLIC_FPDF_EXT_H_
+//#define PUBLIC_FPDF_EXT_H_
 
-#include <time.h>
+//#include <time.h>
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//extern "C" {
+//#endif  // __cplusplus
 
 // Unsupported XFA form.
 #define FPDF_UNSP_DOC_XFAFORM 1
@@ -66,7 +66,7 @@ typedef struct _UNSUPPORT_INFO {
 //   unsp_info - Pointer to an UNSUPPORT_INFO structure.
 //
 // Returns TRUE on success.
-FPDF_EXPORT FPDF_BOOL FPDF_CALLCONV
+ FPDF_BOOL 
 FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 
 // Set replacement function for calls to time().
@@ -76,7 +76,7 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 //
 //   func - Function pointer to alternate implementation of time(), or
 //          NULL to restore to actual time() call itself.
-FPDF_EXPORT void FPDF_CALLCONV FSDK_SetTimeFunction(time_t (*func)());
+// void  FSDK_SetTimeFunction(time_t (*func)());
 
 // Set replacement function for calls to localtime().
 //
@@ -85,8 +85,8 @@ FPDF_EXPORT void FPDF_CALLCONV FSDK_SetTimeFunction(time_t (*func)());
 //
 //   func - Function pointer to alternate implementation of localtime(), or
 //          NULL to restore to actual localtime() call itself.
-FPDF_EXPORT void FPDF_CALLCONV
-FSDK_SetLocaltimeFunction(struct tm* (*func)(const time_t*));
+// void 
+//FSDK_SetLocaltimeFunction(struct tm* (*func)(const time_t*));
 
 // Unknown page mode.
 #define PAGEMODE_UNKNOWN -1
@@ -110,10 +110,10 @@ FSDK_SetLocaltimeFunction(struct tm* (*func)(const time_t*));
 // Returns one of the |PAGEMODE_*| flags defined above.
 //
 // The page mode defines how the document should be initially displayed.
-FPDF_EXPORT int FPDF_CALLCONV FPDFDoc_GetPageMode(FPDF_DOCUMENT document);
+ int  FPDFDoc_GetPageMode(FPDF_DOCUMENT document);
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//}  // extern "C"
+//#endif  // __cplusplus
 
-#endif  // PUBLIC_FPDF_EXT_H_
+//#endif  // PUBLIC_FPDF_EXT_H_

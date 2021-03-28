@@ -4,11 +4,11 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-#ifndef PUBLIC_FPDF_FLATTEN_H_
-#define PUBLIC_FPDF_FLATTEN_H_
+//#ifndef PUBLIC_FPDF_FLATTEN_H_
+//#define PUBLIC_FPDF_FLATTEN_H_
 
 // NOLINTNEXTLINE(build/include)
-#include "fpdfview.h"
+//#include "fpdfview.h"
 
 // Flatten operation failed.
 #define FLATTEN_FAIL 0
@@ -22,9 +22,9 @@
 // Flatten for print.
 #define FLAT_PRINT 1
 
-#ifdef __cplusplus
-extern "C" {
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//extern "C" {
+//#endif  // __cplusplus
 
 // Flatten annotations and form fields into the page contents.
 //
@@ -35,10 +35,10 @@ extern "C" {
 //
 // Currently, all failures return |FLATTEN_FAIL| with no indication of the
 // cause.
-FPDF_EXPORT int FPDF_CALLCONV FPDFPage_Flatten(FPDF_PAGE page, int nFlag);
+ int  FPDFPage_Flatten(FPDF_PAGE page, int nFlag);
 
-#ifdef __cplusplus
-}  // extern "C"
-#endif  // __cplusplus
+//#ifdef __cplusplus
+//}  // extern "C"
+//#endif  // __cplusplus
 
-#endif  // PUBLIC_FPDF_FLATTEN_H_
+//#endif  // PUBLIC_FPDF_FLATTEN_H_
