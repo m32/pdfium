@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -50,7 +50,6 @@ typedef struct _FX_FILEAVAIL {
                            size_t offset,
                            size_t size);
 } FX_FILEAVAIL;
-typedef void* FPDF_AVAIL;
 
 // Create a document availability provider.
 //
@@ -60,13 +59,13 @@ typedef void* FPDF_AVAIL;
 // Returns a handle to the document availability provider, or NULL on error.
 //
 // FPDFAvail_Destroy() must be called when done with the availability provider.
- FPDF_AVAIL  FPDFAvail_Create(FX_FILEAVAIL* file_avail,
+extern FPDF_AVAIL  FPDFAvail_Create(FX_FILEAVAIL* file_avail,
                                                       FPDF_FILEACCESS* file);
 
 // Destroy the |avail| document availability provider.
 //
 //   avail - handle to document availability provider to be destroyed.
- void  FPDFAvail_Destroy(FPDF_AVAIL avail);
+extern void  FPDFAvail_Destroy(FPDF_AVAIL avail);
 
 // Download hints interface. Used to receive hints for further downloading.
 typedef struct _FX_DOWNLOADHINTS {
@@ -107,7 +106,7 @@ typedef struct _FX_DOWNLOADHINTS {
 //
 // Once all data is available, call FPDFAvail_GetDocument() to get a document
 // handle.
- int  FPDFAvail_IsDocAvail(FPDF_AVAIL avail,
+extern int  FPDFAvail_IsDocAvail(FPDF_AVAIL avail,
                                                    FX_DOWNLOADHINTS* hints);
 
 // Get document from the availability provider.
@@ -121,7 +120,7 @@ typedef struct _FX_DOWNLOADHINTS {
 // retrieve the document handle.
 // See the comments for FPDF_LoadDocument() regarding the encoding for
 // |password|.
- FPDF_DOCUMENT 
+extern FPDF_DOCUMENT 
 FPDFAvail_GetDocument(FPDF_AVAIL avail, FPDF_BYTESTRING password);
 
 // Get the page number for the first available page in a linearized PDF.
@@ -133,7 +132,7 @@ FPDFAvail_GetDocument(FPDF_AVAIL avail, FPDF_BYTESTRING password);
 // For most linearized PDFs, the first available page will be the first page,
 // however, some PDFs might make another page the first available page.
 // For non-linearized PDFs, this function will always return zero.
- int  FPDFAvail_GetFirstPageNum(FPDF_DOCUMENT doc);
+extern int  FPDFAvail_GetFirstPageNum(FPDF_DOCUMENT doc);
 
 // Check if |page_index| is ready for loading, if not, get the
 // |FX_DOWNLOADHINTS|.
@@ -155,7 +154,7 @@ FPDFAvail_GetDocument(FPDF_AVAIL avail, FPDF_BYTESTRING password);
 // loading.
 // if hints is nullptr, the function just check current availability of
 // specified page.
- int  FPDFAvail_IsPageAvail(FPDF_AVAIL avail,
+extern int  FPDFAvail_IsPageAvail(FPDF_AVAIL avail,
                                                     int page_index,
                                                     FX_DOWNLOADHINTS* hints);
 
@@ -180,7 +179,7 @@ FPDFAvail_GetDocument(FPDF_AVAIL avail, FPDF_BYTESTRING password);
 //
 // Applications can then perform page loading. It is recommend to call
 // FPDFDOC_InitFormFillEnvironment() when |PDF_FORM_AVAIL| is returned.
- int  FPDFAvail_IsFormAvail(FPDF_AVAIL avail,
+extern int  FPDFAvail_IsFormAvail(FPDF_AVAIL avail,
                                                     FX_DOWNLOADHINTS* hints);
 
 // Check whether a document is a linearized PDF.
@@ -196,7 +195,7 @@ FPDFAvail_GetDocument(FPDF_AVAIL avail, FPDF_BYTESTRING password);
 // when we have 1k  of data. If the files size less than 1k, it returns
 // |PDF_LINEARIZATION_UNKNOWN| as there is insufficient information to determine
 // if the PDF is linearlized.
- int  FPDFAvail_IsLinearized(FPDF_AVAIL avail);
+extern int  FPDFAvail_IsLinearized(FPDF_AVAIL avail);
 
 //#ifdef __cplusplus
 //}  // extern "C"

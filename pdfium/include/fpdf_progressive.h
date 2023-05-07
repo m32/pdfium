@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -79,7 +79,7 @@ typedef struct _IFSDK_PAUSE {
 // Return value:
 //          Rendering Status. See flags for progressive process status for the
 //          details.
- int 
+extern int 
 FPDF_RenderPageBitmapWithColorScheme_Start(FPDF_BITMAP bitmap,
                                            FPDF_PAGE page,
                                            int start_x,
@@ -118,7 +118,7 @@ FPDF_RenderPageBitmapWithColorScheme_Start(FPDF_BITMAP bitmap,
 // Return value:
 //          Rendering Status. See flags for progressive process status for the
 //          details.
- int  FPDF_RenderPageBitmap_Start(FPDF_BITMAP bitmap,
+extern int  FPDF_RenderPageBitmap_Start(FPDF_BITMAP bitmap,
                                                           FPDF_PAGE page,
                                                           int start_x,
                                                           int start_y,
@@ -139,7 +139,7 @@ FPDF_RenderPageBitmapWithColorScheme_Start(FPDF_BITMAP bitmap,
 // Return value:
 //          The rendering status. See flags for progressive process status for
 //          the details.
- int  FPDF_RenderPage_Continue(FPDF_PAGE page,
+extern int  FPDF_RenderPage_Continue(FPDF_PAGE page,
                                                        IFSDK_PAUSE* pause);
 
 // Function: FPDF_RenderPage_Close
@@ -150,7 +150,7 @@ FPDF_RenderPageBitmapWithColorScheme_Start(FPDF_BITMAP bitmap,
 //          page        -   Handle to the page, as returned by FPDF_LoadPage().
 // Return value:
 //          None.
- void  FPDF_RenderPage_Close(FPDF_PAGE page);
+extern void  FPDF_RenderPage_Close(FPDF_PAGE page);
 
 //#ifdef __cplusplus
 //}

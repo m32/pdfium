@@ -1,4 +1,4 @@
-// Copyright 2020 PDFium Authors. All rights reserved.
+// Copyright 2020 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -19,7 +19,7 @@
 //          document    -   Handle to document. Returned by FPDF_LoadDocument().
 // Return value:
 //          Total number of signatures in the document on success, -1 on error.
- int  FPDF_GetSignatureCount(FPDF_DOCUMENT document);
+extern int  FPDF_GetSignatureCount(FPDF_DOCUMENT document);
 
 // Experimental API.
 // Function: FPDF_GetSignatureObject
@@ -31,7 +31,7 @@
 //          Returns the handle to the signature, or NULL on failure. The caller
 //          does not take ownership of the returned FPDF_SIGNATURE. Instead, it
 //          remains valid until FPDF_CloseDocument() is called for the document.
- FPDF_SIGNATURE 
+extern FPDF_SIGNATURE 
 FPDF_GetSignatureObject(FPDF_DOCUMENT document, int index);
 
 // Experimental API.
@@ -48,7 +48,7 @@ FPDF_GetSignatureObject(FPDF_DOCUMENT document, int index);
 // For public-key signatures, |buffer| is either a DER-encoded PKCS#1 binary or
 // a DER-encoded PKCS#7 binary. If |length| is less than the returned length, or
 // |buffer| is NULL, |buffer| will not be modified.
- unsigned long 
+extern unsigned long 
 FPDFSignatureObj_GetContents(FPDF_SIGNATURE signature,
                              void* buffer,
                              unsigned long length);
@@ -70,7 +70,7 @@ FPDFSignatureObj_GetContents(FPDF_SIGNATURE signature,
 // length in bytes) that describes the exact byte range for the digest
 // calculation. If |length| is less than the returned length, or
 // |buffer| is NULL, |buffer| will not be modified.
- unsigned long 
+extern unsigned long 
 FPDFSignatureObj_GetByteRange(FPDF_SIGNATURE signature,
                               int* buffer,
                               unsigned long length);
@@ -89,7 +89,7 @@ FPDFSignatureObj_GetByteRange(FPDF_SIGNATURE signature,
 //
 // The |buffer| is always encoded in 7-bit ASCII. If |length| is less than the
 // returned length, or |buffer| is NULL, |buffer| will not be modified.
- unsigned long 
+extern unsigned long 
 FPDFSignatureObj_GetSubFilter(FPDF_SIGNATURE signature,
                               char* buffer,
                               unsigned long length);
@@ -108,7 +108,7 @@ FPDFSignatureObj_GetSubFilter(FPDF_SIGNATURE signature,
 // Regardless of the platform, the |buffer| is always in UTF-16LE encoding. The
 // string is terminated by a UTF16 NUL character. If |length| is less than the
 // returned length, or |buffer| is NULL, |buffer| will not be modified.
- unsigned long 
+extern unsigned long 
 FPDFSignatureObj_GetReason(FPDF_SIGNATURE signature,
                            void* buffer,
                            unsigned long length);
@@ -132,7 +132,7 @@ FPDFSignatureObj_GetReason(FPDF_SIGNATURE signature,
 // percision is seconds, with timezone information. This value should be used
 // only when the time of signing is not available in the (PKCS#7 binary)
 // signature.
- unsigned long 
+extern unsigned long 
 FPDFSignatureObj_GetTime(FPDF_SIGNATURE signature,
                          char* buffer,
                          unsigned long length);
@@ -145,7 +145,7 @@ FPDFSignatureObj_GetTime(FPDF_SIGNATURE signature,
 //                          FPDF_GetSignatureObject().
 // Return value:
 //          Returns the permission (1, 2 or 3) on success, 0 on error.
- unsigned int 
+extern unsigned int 
 FPDFSignatureObj_GetDocMDPPermission(FPDF_SIGNATURE signature);
 
 //#ifdef __cplusplus

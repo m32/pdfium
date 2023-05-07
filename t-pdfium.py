@@ -7,30 +7,31 @@ class Demo:
     def __init__(self, lib):
         self.lib = lib
 
+    def SavePage(self, doc, pageno, scale=6):
+        page = doc.Page(pageno)
+        width = int(page.width() * scale)
+        height = int(page.height() * scale)
+        print('page:', pageno, 'size:', width, height)
+        try:
+            data = page.thumbnail(nbytes=False, raw=True, bitmap=False)
+            if data[1] is None:
+                print('no thumbnail')
+            bmp = page.render(0, 0, width, height, 0, 0)
+            try:
+                img = bmp.image()
+                #img.save('page0.jpg', 'JPEG', quality=80)
+                img.save('page%02d.png'%pageno, 'PNG')
+            finally:
+                bmp.close()
+        finally:
+            page.close()
+
     def SavePages(self, doc):
-        scale = 6
-        print('Set scale:', scale)
         pc = doc.PageCount()
         for pageno in range(pc):
-            page = doc.Page(pageno)
-            width = int(page.width() * scale)
-            height = int(page.height() * scale)
-            print('page:', pageno, 'size:', width, height)
-            try:
-                data = page.thumbnail(nbytes=False, raw=True, bitmap=False)
-                if data[1] is None:
-                    print('no thumbnail')
-                bmp = page.render(0, 0, width, height, 0, 0)
-                try:
-                    img = bmp.image()
-                    #img.save('page0.jpg', 'JPEG', quality=80)
-                    img.save('page%02d.png'%pageno, 'PNG')
-                    if pageno == 5:
-                        break
-                finally:
-                    bmp.close()
-            finally:
-                page.close()
+            self.SavePage(doc, pageno)
+            if pageno == 5:
+                break
 
     def SigInfo(self, doc):
         nsig = doc.FPDF_GetSignatureCount(doc.handle)
@@ -47,6 +48,7 @@ class Demo:
             if nb:
                 buf = bytes(b'\0'*nb)
                 nb = doc.FPDFSignatureObj_GetReason(sig, buf, nb)
+                buf = buf.decode('utf-16le')
             else:
                 buf = 'undefined'
             print('    reason:', buf)
@@ -72,6 +74,8 @@ class Demo:
         try:
             pc = doc.PageCount()
             print('Pages:', pc)
+            self.SavePage(doc, 1)
+            self.SavePage(doc, 2)
             title = doc.Title()
             print('Title:', title)
             self.SigInfo(doc)

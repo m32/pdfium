@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -66,7 +66,7 @@ typedef struct _UNSUPPORT_INFO {
 //   unsp_info - Pointer to an UNSUPPORT_INFO structure.
 //
 // Returns TRUE on success.
- FPDF_BOOL 
+extern FPDF_BOOL 
 FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 
 // Set replacement function for calls to time().
@@ -76,7 +76,7 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 //
 //   func - Function pointer to alternate implementation of time(), or
 //          NULL to restore to actual time() call itself.
-// void  FSDK_SetTimeFunction(time_t (*func)());
+//extern void  FSDK_SetTimeFunction(time_t (*func)());
 
 // Set replacement function for calls to localtime().
 //
@@ -85,7 +85,7 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 //
 //   func - Function pointer to alternate implementation of localtime(), or
 //          NULL to restore to actual localtime() call itself.
-// void 
+//extern void 
 //FSDK_SetLocaltimeFunction(struct tm* (*func)(const time_t*));
 
 // Unknown page mode.
@@ -110,7 +110,7 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 // Returns one of the |PAGEMODE_*| flags defined above.
 //
 // The page mode defines how the document should be initially displayed.
- int  FPDFDoc_GetPageMode(FPDF_DOCUMENT document);
+extern int  FPDFDoc_GetPageMode(FPDF_DOCUMENT document);
 
 //#ifdef __cplusplus
 //}  // extern "C"

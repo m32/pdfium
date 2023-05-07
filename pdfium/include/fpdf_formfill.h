@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -24,14 +24,14 @@
 #define JSPLATFORM_ALERT_BUTTON_OKCANCEL 1     // OK & Cancel buttons
 #define JSPLATFORM_ALERT_BUTTON_YESNO 2        // Yes & No buttons
 #define JSPLATFORM_ALERT_BUTTON_YESNOCANCEL 3  // Yes, No & Cancel buttons
-#define JSPLATFORM_ALERT_BUTTON_DEFAULT 0
+#define JSPLATFORM_ALERT_BUTTON_DEFAULT 0 //JSPLATFORM_ALERT_BUTTON_OK
 
 #define JSPLATFORM_ALERT_ICON_ERROR 0     // Error
 #define JSPLATFORM_ALERT_ICON_WARNING 1   // Warning
 #define JSPLATFORM_ALERT_ICON_QUESTION 2  // Question
 #define JSPLATFORM_ALERT_ICON_STATUS 3    // Status
 #define JSPLATFORM_ALERT_ICON_ASTERISK 4  // Asterisk
-#define JSPLATFORM_ALERT_ICON_DEFAULT 0
+#define JSPLATFORM_ALERT_ICON_DEFAULT 0 //JSPLATFORM_ALERT_ICON_ERROR
 
 #define JSPLATFORM_ALERT_RETURN_OK 1      // OK
 #define JSPLATFORM_ALERT_RETURN_CANCEL 2  // Cancel
@@ -307,7 +307,9 @@ typedef struct _IPDF_JsPlatform {
                       int length);
 
   /*
-   * Pointer to FPDF_FORMFILLINFO interface.
+   * Pointer for embedder-specific data. Unused by PDFium, and despite
+   * its name, can be any data the embedder desires, though traditionally
+   * a FPDF_FORMFILLINFO interface.
    */
   void* m_pFormfillinfo;
 
@@ -637,8 +639,9 @@ typedef struct _FPDF_FORMFILLINFO {
    * Return value:
    *       None.
    * Comments:
-   *       See the named actions description of <<PDF Reference, version 1.7>>
-   *       for more details.
+   *       See ISO 32000-1:2008, section 12.6.4.11 for descriptions of the
+   *       standard named actions, but note that a document may supply any
+   *       name of its choosing.
    */
   void (*FFI_ExecuteNamedAction)(struct _FPDF_FORMFILLINFO* pThis,
                                  FPDF_BYTESTRING namedAction);
@@ -1140,13 +1143,15 @@ typedef struct _FPDF_FORMFILLINFO {
  *       Initialize form fill environment.
  * Parameters:
  *       document        -   Handle to document from FPDF_LoadDocument().
- *       pFormFillInfo   -   Pointer to a FPDF_FORMFILLINFO structure.
+ *       formInfo        -   Pointer to a FPDF_FORMFILLINFO structure.
  * Return Value:
  *       Handle to the form fill module, or NULL on failure.
  * Comments:
  *       This function should be called before any form fill operation.
+ *       The FPDF_FORMFILLINFO passed in via |formInfo| must remain valid until
+ *       the returned FPDF_FORMHANDLE is closed.
  */
- FPDF_FORMHANDLE 
+extern FPDF_FORMHANDLE 
 FPDFDOC_InitFormFillEnvironment(FPDF_DOCUMENT document,
                                 FPDF_FORMFILLINFO* formInfo);
 
@@ -1161,7 +1166,7 @@ FPDFDOC_InitFormFillEnvironment(FPDF_DOCUMENT document,
  * Comments:
  *       This function is a no-op when |hHandle| is null.
  */
- void 
+extern void 
 FPDFDOC_ExitFormFillEnvironment(FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1175,7 +1180,7 @@ FPDFDOC_ExitFormFillEnvironment(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       None.
  */
- void  FORM_OnAfterLoadPage(FPDF_PAGE page,
+extern void  FORM_OnAfterLoadPage(FPDF_PAGE page,
                                                     FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1189,7 +1194,7 @@ FPDFDOC_ExitFormFillEnvironment(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *        None.
  */
- void  FORM_OnBeforeClosePage(FPDF_PAGE page,
+extern void  FORM_OnBeforeClosePage(FPDF_PAGE page,
                                                       FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1206,7 +1211,7 @@ FPDFDOC_ExitFormFillEnvironment(FPDF_FORMHANDLE hHandle);
  *       document, this method will execute the JavaScript action. Otherwise,
  *       the method will do nothing.
  */
- void 
+extern void 
 FORM_DoDocumentJSAction(FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1222,7 +1227,7 @@ FORM_DoDocumentJSAction(FPDF_FORMHANDLE hHandle);
  *       This method will do nothing if there are no open-actions embedded
  *       in the document.
  */
- void 
+extern void 
 FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
 
 // Additional actions type of document:
@@ -1252,7 +1257,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  *       This method will do nothing if there is no document
  *       additional-action corresponding to the specified |aaType|.
  */
- void  FORM_DoDocumentAAction(FPDF_FORMHANDLE hHandle,
+extern void  FORM_DoDocumentAAction(FPDF_FORMHANDLE hHandle,
                                                       int aaType);
 
 // Additional-action types of page object:
@@ -1277,7 +1282,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  *       This method will do nothing if no additional-action corresponding
  *       to the specified |aaType| exists.
  */
- void  FORM_DoPageAAction(FPDF_PAGE page,
+extern void  FORM_DoPageAAction(FPDF_PAGE page,
                                                   FPDF_FORMHANDLE hHandle,
                                                   int aaType);
 
@@ -1296,7 +1301,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL  FORM_OnMouseMove(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnMouseMove(FPDF_FORMHANDLE hHandle,
                                                      FPDF_PAGE page,
                                                      int modifier,
                                                      double page_x,
@@ -1327,7 +1332,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  *       for a WM_MOUSEWHEEL event normalizes to 2, since Windows defines
  *       WHEEL_DELTA as 120.
  */
- FPDF_BOOL  FORM_OnMouseWheel(
+extern FPDF_BOOL  FORM_OnMouseWheel(
     FPDF_FORMHANDLE hHandle,
     FPDF_PAGE page,
     int modifier,
@@ -1352,7 +1357,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       True if there is an annotation at the given point and it has focus.
  */
- FPDF_BOOL  FORM_OnFocus(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnFocus(FPDF_FORMHANDLE hHandle,
                                                  FPDF_PAGE page,
                                                  int modifier,
                                                  double page_x,
@@ -1374,7 +1379,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL  FORM_OnLButtonDown(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnLButtonDown(FPDF_FORMHANDLE hHandle,
                                                        FPDF_PAGE page,
                                                        int modifier,
                                                        double page_x,
@@ -1387,7 +1392,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  *       At the present time, has no effect except in XFA builds, but is
  *       included for the sake of symmetry.
  */
- FPDF_BOOL  FORM_OnRButtonDown(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnRButtonDown(FPDF_FORMHANDLE hHandle,
                                                        FPDF_PAGE page,
                                                        int modifier,
                                                        double page_x,
@@ -1406,7 +1411,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL  FORM_OnLButtonUp(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnLButtonUp(FPDF_FORMHANDLE hHandle,
                                                      FPDF_PAGE page,
                                                      int modifier,
                                                      double page_x,
@@ -1419,7 +1424,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  *       At the present time, has no effect except in XFA builds, but is
  *       included for the sake of symmetry.
  */
- FPDF_BOOL  FORM_OnRButtonUp(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnRButtonUp(FPDF_FORMHANDLE hHandle,
                                                      FPDF_PAGE page,
                                                      int modifier,
                                                      double page_x,
@@ -1441,7 +1446,7 @@ FORM_DoDocumentOpenAction(FPDF_FORMHANDLE hHandle);
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE hHandle,
                           FPDF_PAGE page,
                           int modifier,
@@ -1455,13 +1460,14 @@ FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE hHandle,
  *       hHandle     -   Handle to the form fill module, aseturned by
  *                       FPDFDOC_InitFormFillEnvironment().
  *       page        -   Handle to the page, as returned by FPDF_LoadPage().
- *       nKeyCode    -   Indicates whether various virtual keys are down.
- *       modifier    -   Contains the scan code, key-transition code,
- *                       previous key state, and context code.
+ *       nKeyCode    -   The virtual-key code of the given key (see
+ *                       fpdf_fwlevent.h for virtual key codes).
+ *       modifier    -   Mask of key flags (see fpdf_fwlevent.h for key
+ *                       flag values).
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL  FORM_OnKeyDown(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnKeyDown(FPDF_FORMHANDLE hHandle,
                                                    FPDF_PAGE page,
                                                    int nKeyCode,
                                                    int modifier);
@@ -1473,13 +1479,17 @@ FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE hHandle,
  *       hHandle     -   Handle to the form fill module, as returned by
  *                       FPDFDOC_InitFormFillEnvironment().
  *       page        -   Handle to the page, as returned by FPDF_LoadPage().
- *       nKeyCode    -   The virtual-key code of the given key.
- *       modifier    -   Contains the scan code, key-transition code,
- *                       previous key state, and context code.
+ *       nKeyCode    -   The virtual-key code of the given key (see
+ *                       fpdf_fwlevent.h for virtual key codes).
+ *       modifier    -   Mask of key flags (see fpdf_fwlevent.h for key
+ *                       flag values).
  * Return Value:
  *       True indicates success; otherwise false.
+ * Comments:
+ *       Currently unimplemented and always returns false. PDFium reserves this
+ *       API and may implement it in the future on an as-needed basis.
  */
- FPDF_BOOL  FORM_OnKeyUp(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnKeyUp(FPDF_FORMHANDLE hHandle,
                                                  FPDF_PAGE page,
                                                  int nKeyCode,
                                                  int modifier);
@@ -1489,16 +1499,16 @@ FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE hHandle,
  *       Call this member function when a keystroke translates to a
  *       nonsystem character.
  * Parameters:
- *        hHandle    -   Handle to the form fill module, as returned by
+ *       hHandle     -   Handle to the form fill module, as returned by
  *                       FPDFDOC_InitFormFillEnvironment().
- *        page       -   Handle to the page, as returned by FPDF_LoadPage().
- *        nChar      -   The character code value of the key.
- *        modifier   -   Contains the scan code, key-transition code,
- *                       previous key state, and context code.
+ *       page        -   Handle to the page, as returned by FPDF_LoadPage().
+ *       nChar       -   The character code value itself.
+ *       modifier    -   Mask of key flags (see fpdf_fwlevent.h for key
+ *                       flag values).
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL  FORM_OnChar(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_OnChar(FPDF_FORMHANDLE hHandle,
                                                 FPDF_PAGE page,
                                                 int nChar,
                                                 int modifier);
@@ -1520,7 +1530,7 @@ FORM_OnLButtonDoubleClick(FPDF_FORMHANDLE hHandle,
  * Return Value:
  *       Length in bytes for the text in the focused field.
  */
- unsigned long 
+extern unsigned long 
 FORM_GetFocusedText(FPDF_FORMHANDLE hHandle,
                     FPDF_PAGE page,
                     void* buffer,
@@ -1543,19 +1553,21 @@ FORM_GetFocusedText(FPDF_FORMHANDLE hHandle,
  *       Length in bytes of selected text in form text field or form combobox
  *       text field.
  */
- unsigned long 
+extern unsigned long 
 FORM_GetSelectedText(FPDF_FORMHANDLE hHandle,
                      FPDF_PAGE page,
                      void* buffer,
                      unsigned long buflen);
 
 /*
- * Function: FORM_ReplaceSelection
+ * Experimental API
+ * Function: FORM_ReplaceAndKeepSelection
  *       Call this function to replace the selected text in a form
  *       text field or user-editable form combobox text field with another
  *       text string (which can be empty or non-empty). If there is no
  *       selected text, this function will append the replacement text after
- *       the current caret position.
+ *       the current caret position. After the insertion, the inserted text
+ *       will be selected.
  * Parameters:
  *       hHandle     -   Handle to the form fill module, as returned by
  *                       FPDFDOC_InitFormFillEnvironment().
@@ -1564,7 +1576,28 @@ FORM_GetSelectedText(FPDF_FORMHANDLE hHandle,
  * Return Value:
  *       None.
  */
- void  FORM_ReplaceSelection(FPDF_FORMHANDLE hHandle,
+extern void 
+FORM_ReplaceAndKeepSelection(FPDF_FORMHANDLE hHandle,
+                             FPDF_PAGE page,
+                             FPDF_WIDESTRING wsText);
+
+/*
+ * Function: FORM_ReplaceSelection
+ *       Call this function to replace the selected text in a form
+ *       text field or user-editable form combobox text field with another
+ *       text string (which can be empty or non-empty). If there is no
+ *       selected text, this function will append the replacement text after
+ *       the current caret position. After the insertion, the selection range
+ *       will be set to empty.
+ * Parameters:
+ *       hHandle     -   Handle to the form fill module, as returned by
+ *                       FPDFDOC_InitFormFillEnvironment().
+ *       page        -   Handle to the page, as Returned by FPDF_LoadPage().
+ *       wsText      -   The text to be inserted, in UTF-16LE format.
+ * Return Value:
+ *       None.
+ */
+extern void  FORM_ReplaceSelection(FPDF_FORMHANDLE hHandle,
                                                      FPDF_PAGE page,
                                                      FPDF_WIDESTRING wsText);
 
@@ -1580,7 +1613,7 @@ FORM_GetSelectedText(FPDF_FORMHANDLE hHandle,
  * Return Value:
  *       Whether the operation succeeded or not.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
 
 /*
@@ -1594,7 +1627,7 @@ FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
  * Return Value:
  *       True if it is possible to undo.
  */
- FPDF_BOOL  FORM_CanUndo(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_CanUndo(FPDF_FORMHANDLE hHandle,
                                                  FPDF_PAGE page);
 
 /*
@@ -1608,7 +1641,7 @@ FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
  * Return Value:
  *       True if it is possible to redo.
  */
- FPDF_BOOL  FORM_CanRedo(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_CanRedo(FPDF_FORMHANDLE hHandle,
                                                  FPDF_PAGE page);
 
 /*
@@ -1621,7 +1654,7 @@ FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
  * Return Value:
  *       True if the undo operation succeeded.
  */
- FPDF_BOOL  FORM_Undo(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_Undo(FPDF_FORMHANDLE hHandle,
                                               FPDF_PAGE page);
 
 /*
@@ -1634,7 +1667,7 @@ FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
  * Return Value:
  *       True if the redo operation succeeded.
  */
- FPDF_BOOL  FORM_Redo(FPDF_FORMHANDLE hHandle,
+extern FPDF_BOOL  FORM_Redo(FPDF_FORMHANDLE hHandle,
                                               FPDF_PAGE page);
 
 /*
@@ -1648,7 +1681,7 @@ FORM_SelectAllText(FPDF_FORMHANDLE hHandle, FPDF_PAGE page);
  * Return Value:
  *       True indicates success; otherwise false.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_ForceToKillFocus(FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1673,7 +1706,7 @@ FORM_ForceToKillFocus(FPDF_FORMHANDLE hHandle);
  *       This will return true and set |page_index| to -1 and |annot| to NULL, if
  *       there is no focused annotation.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_GetFocusedAnnot(FPDF_FORMHANDLE handle,
                      int* page_index,
                      FPDF_ANNOTATION* annot);
@@ -1692,7 +1725,7 @@ FORM_GetFocusedAnnot(FPDF_FORMHANDLE handle,
  *       |annot| can't be NULL. To kill focus, use FORM_ForceToKillFocus()
  *       instead.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_SetFocusedAnnot(FPDF_FORMHANDLE handle, FPDF_ANNOTATION annot);
 
 // Form Field Types
@@ -1748,7 +1781,7 @@ FORM_SetFocusedAnnot(FPDF_FORMHANDLE handle, FPDF_ANNOTATION annot);
  *     Return the type of the form field; -1 indicates no field.
  *     See field types above.
  */
- int 
+extern int 
 FPDFPage_HasFormFieldAtPoint(FPDF_FORMHANDLE hHandle,
                              FPDF_PAGE page,
                              double page_x,
@@ -1767,7 +1800,7 @@ FPDFPage_HasFormFieldAtPoint(FPDF_FORMHANDLE hHandle,
  *     Return the z-order of the form field; -1 indicates no field.
  *     Higher numbers are closer to the front.
  */
- int 
+extern int 
 FPDFPage_FormFieldZOrderAtPoint(FPDF_FORMHANDLE hHandle,
                                 FPDF_PAGE page,
                                 double page_x,
@@ -1795,7 +1828,7 @@ FPDFPage_FormFieldZOrderAtPoint(FPDF_FORMHANDLE hHandle,
  *       Please refresh the client window to show the highlight immediately
  *       if necessary.
  */
- void 
+extern void 
 FPDF_SetFormFieldHighlightColor(FPDF_FORMHANDLE hHandle,
                                 int fieldType,
                                 unsigned long color);
@@ -1814,7 +1847,7 @@ FPDF_SetFormFieldHighlightColor(FPDF_FORMHANDLE hHandle,
  * Return Value:
  *       None.
  */
- void 
+extern void 
 FPDF_SetFormFieldHighlightAlpha(FPDF_FORMHANDLE hHandle, unsigned char alpha);
 
 /*
@@ -1829,7 +1862,7 @@ FPDF_SetFormFieldHighlightAlpha(FPDF_FORMHANDLE hHandle, unsigned char alpha);
  *       Please refresh the client window to remove the highlight immediately
  *       if necessary.
  */
- void 
+extern void 
 FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE hHandle);
 
 /*
@@ -1869,7 +1902,7 @@ FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE hHandle);
 *       FPDF_RenderPageBitmap() or FPDF_RenderPageBitmap_Start(), have
 *       finished rendering the page contents.
 */
- void  FPDF_FFLDraw(FPDF_FORMHANDLE hHandle,
+extern void  FPDF_FFLDraw(FPDF_FORMHANDLE hHandle,
                                             FPDF_BITMAP bitmap,
                                             FPDF_PAGE page,
                                             int start_x,
@@ -1880,7 +1913,7 @@ FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE hHandle);
                                             int flags);
 
 //#if defined(_SKIA_SUPPORT_)
-// void  FPDF_FFLRecord(FPDF_FORMHANDLE hHandle,
+//extern void  FPDF_FFLRecord(FPDF_FORMHANDLE hHandle,
 //                                              FPDF_RECORDER recorder,
 //                                              FPDF_PAGE page,
 //                                              int start_x,
@@ -1902,7 +1935,7 @@ FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE hHandle);
  * Comments:
  *           If |document| is NULL, then the return value is FORMTYPE_NONE.
  */
- int  FPDF_GetFormType(FPDF_DOCUMENT document);
+extern int  FPDF_GetFormType(FPDF_DOCUMENT document);
 
 /*
  * Experimental API
@@ -1927,7 +1960,7 @@ FPDF_RemoveFormFieldHighlight(FPDF_FORMHANDLE hHandle);
  *           other types.
  *           Not currently supported for XFA forms - will return false.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_SetIndexSelected(FPDF_FORMHANDLE hHandle,
                       FPDF_PAGE page,
                       int index,
@@ -1952,7 +1985,7 @@ FORM_SetIndexSelected(FPDF_FORMHANDLE hHandle,
  *           implementation is a no-op that will return false for other types.
  *           Not currently supported for XFA forms - will return false.
  */
- FPDF_BOOL 
+extern FPDF_BOOL 
 FORM_IsIndexSelected(FPDF_FORMHANDLE hHandle, FPDF_PAGE page, int index);
 
 /*
@@ -1965,7 +1998,7 @@ FORM_IsIndexSelected(FPDF_FORMHANDLE hHandle, FPDF_PAGE page, int index);
  *          TRUE upon success, otherwise FALSE. If XFA support is not built
  *          into PDFium, performs no action and always returns FALSE.
  */
- FPDF_BOOL  FPDF_LoadXFA(FPDF_DOCUMENT document);
+extern FPDF_BOOL  FPDF_LoadXFA(FPDF_DOCUMENT document);
 
 //#ifdef __cplusplus
 //}

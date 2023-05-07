@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -20,7 +20,7 @@
 //   nTextIndex - index of the text returned from FPDFText_GetText().
 //
 // Returns the index of the character in internal character list. -1 for error.
- int 
+extern int 
 FPDFText_GetCharIndexFromTextIndex(FPDF_TEXTPAGE text_page, int nTextIndex);
 
 // Get the text index in |text_page| internal character list.
@@ -29,7 +29,7 @@ FPDFText_GetCharIndexFromTextIndex(FPDF_TEXTPAGE text_page, int nTextIndex);
 //   nCharIndex - index of the character in internal character list.
 //
 // Returns the index of the text returned from FPDFText_GetText(). -1 for error.
- int 
+extern int 
 FPDFText_GetTextIndexFromCharIndex(FPDF_TEXTPAGE text_page, int nCharIndex);
 
 //#ifdef __cplusplus

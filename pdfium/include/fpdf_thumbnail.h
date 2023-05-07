@@ -1,4 +1,4 @@
-// Copyright 2019 PDFium Authors. All rights reserved.
+// Copyright 2019 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -24,7 +24,7 @@
 //   page    - handle to a page.
 //   buffer  - buffer for holding the decoded image data.
 //   buflen  - length of the buffer in bytes.
- unsigned long 
+extern unsigned long 
 FPDFPage_GetDecodedThumbnailData(FPDF_PAGE page,
                                  void* buffer,
                                  unsigned long buflen);
@@ -39,7 +39,7 @@ FPDFPage_GetDecodedThumbnailData(FPDF_PAGE page,
 //   page    - handle to a page.
 //   buffer  - buffer for holding the raw image data.
 //   buflen  - length of the buffer in bytes.
- unsigned long 
+extern unsigned long 
 FPDFPage_GetRawThumbnailData(FPDF_PAGE page,
                              void* buffer,
                              unsigned long buflen);
@@ -49,7 +49,7 @@ FPDFPage_GetRawThumbnailData(FPDF_PAGE page,
 // if unable to access the thumbnail's stream.
 //
 //   page - handle to a page.
- FPDF_BITMAP 
+extern FPDF_BITMAP 
 FPDFPage_GetThumbnailAsBitmap(FPDF_PAGE page);
 
 //#ifdef __cplusplus

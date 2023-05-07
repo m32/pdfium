@@ -1,4 +1,4 @@
-// Copyright 2019 PDFium Authors. All rights reserved.
+// Copyright 2019 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -18,7 +18,7 @@
 //   document - handle to a document.
 //
 // Returns the number of JavaScript actions in |document| or -1 on error.
- int 
+extern int 
 FPDFDoc_GetJavaScriptActionCount(FPDF_DOCUMENT document);
 
 // Experimental API.
@@ -30,14 +30,14 @@ FPDFDoc_GetJavaScriptActionCount(FPDF_DOCUMENT document);
 // Returns the handle to the JavaScript action, or NULL on failure.
 // Caller owns the returned handle and must close it with
 // FPDFDoc_CloseJavaScriptAction().
- FPDF_JAVASCRIPT_ACTION 
+extern FPDF_JAVASCRIPT_ACTION 
 FPDFDoc_GetJavaScriptAction(FPDF_DOCUMENT document, int index);
 
 // Experimental API.
 // Close a loaded FPDF_JAVASCRIPT_ACTION object.
 
 //   javascript - Handle to a JavaScript action.
- void 
+extern void 
 FPDFDoc_CloseJavaScriptAction(FPDF_JAVASCRIPT_ACTION javascript);
 
 // Experimental API.
@@ -50,7 +50,7 @@ FPDFDoc_CloseJavaScriptAction(FPDF_JAVASCRIPT_ACTION javascript);
 //   buflen     - length of the buffer in bytes.
 //
 // Returns the length of the JavaScript action name in bytes.
- unsigned long 
+extern unsigned long 
 FPDFJavaScriptAction_GetName(FPDF_JAVASCRIPT_ACTION javascript,
                              FPDF_WCHAR* buffer,
                              unsigned long buflen);
@@ -65,7 +65,7 @@ FPDFJavaScriptAction_GetName(FPDF_JAVASCRIPT_ACTION javascript,
 //   buflen     - length of the buffer in bytes.
 //
 // Returns the length of the JavaScript action name in bytes.
- unsigned long 
+extern unsigned long 
 FPDFJavaScriptAction_GetScript(FPDF_JAVASCRIPT_ACTION javascript,
                                FPDF_WCHAR* buffer,
                                unsigned long buflen);

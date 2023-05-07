@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -19,14 +19,18 @@
 #define FXFONT_HANGEUL_CHARSET 129
 #define FXFONT_GB2312_CHARSET 134
 #define FXFONT_CHINESEBIG5_CHARSET 136
+#define FXFONT_GREEK_CHARSET 161
+#define FXFONT_VIETNAMESE_CHARSET 163
+#define FXFONT_HEBREW_CHARSET 177
 #define FXFONT_ARABIC_CHARSET 178
 #define FXFONT_CYRILLIC_CHARSET 204
+#define FXFONT_THAI_CHARSET 222
 #define FXFONT_EASTERNEUROPEAN_CHARSET 238
 
 /* Font pitch and family flags */
-#define FXFONT_FF_FIXEDPITCH 1
-#define FXFONT_FF_ROMAN 16
-#define FXFONT_FF_SCRIPT 64
+#define FXFONT_FF_FIXEDPITCH 1 //(1 << 0)
+#define FXFONT_FF_ROMAN 16 //(1 << 4)
+#define FXFONT_FF_SCRIPT 64 //(4 << 4)
 
 /* Typical weight values */
 #define FXFONT_FW_NORMAL 400
@@ -241,7 +245,7 @@ typedef struct FPDF_CharsetFontMap_ {
  * Return Value:
  *     Pointer to the Charset Font Map.
  */
- const FPDF_CharsetFontMap*  FPDF_GetDefaultTTFMap();
+extern const FPDF_CharsetFontMap*  FPDF_GetDefaultTTFMap();
 
 /*
  * Function: FPDF_AddInstalledFont
@@ -256,7 +260,7 @@ typedef struct FPDF_CharsetFontMap_ {
  * Return Value:
  *          None.
  */
- void  FPDF_AddInstalledFont(void* mapper,
+extern void  FPDF_AddInstalledFont(void* mapper,
                                                      const char* face,
                                                      int charset);
 
@@ -272,7 +276,7 @@ typedef struct FPDF_CharsetFontMap_ {
  *          FFDF_SYSFONTINFO interface, then call this function during PDFium
  *          initialization process.
  */
- void 
+extern void 
 FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
 
 /*
@@ -290,7 +294,7 @@ FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
  *          font info interface. The default implementation can be passed to
  *          FPDF_SetSystemFontInfo().
  */
- FPDF_SYSFONTINFO*  FPDF_GetDefaultSystemFontInfo();
+extern FPDF_SYSFONTINFO*  FPDF_GetDefaultSystemFontInfo();
 
 /*
  * Function: FPDF_FreeDefaultSystemFontInfo
@@ -303,7 +307,7 @@ FPDF_SetSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
  *           This function should be called on the output from
  *           FPDF_SetSystemFontInfo() once it is no longer needed.
  */
- void 
+extern void 
 FPDF_FreeDefaultSystemFontInfo(FPDF_SYSFONTINFO* pFontInfo);
 
 //#ifdef __cplusplus

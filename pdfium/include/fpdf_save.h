@@ -1,4 +1,4 @@
-// Copyright 2014 PDFium Authors. All rights reserved.
+// Copyright 2014 The PDFium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -56,7 +56,7 @@ typedef struct FPDF_FILEWRITE_ {
 // Return value:
 //          TRUE for succeed, FALSE for failed.
 //
- FPDF_BOOL  FPDF_SaveAsCopy(FPDF_DOCUMENT document,
+extern FPDF_BOOL  FPDF_SaveAsCopy(FPDF_DOCUMENT document,
                                                     FPDF_FILEWRITE* pFileWrite,
                                                     FPDF_DWORD flags);
 
@@ -72,7 +72,7 @@ typedef struct FPDF_FILEWRITE_ {
 // Return value:
 //          TRUE if succeed, FALSE if failed.
 //
- FPDF_BOOL 
+extern FPDF_BOOL 
 FPDF_SaveWithVersion(FPDF_DOCUMENT document,
                      FPDF_FILEWRITE* pFileWrite,
                      FPDF_DWORD flags,
