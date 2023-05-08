@@ -3,6 +3,14 @@ import cffi
 
 from .document import Document
 
+class PDFiumError(Exception):
+    def __init__(self, no, msg):
+        self.no = no
+        self.msg = msg
+    def __str__(self):
+        return 'PDFiumError: rc={} msg={}'.format(self.no, self.msg)
+    __repr__ = __str__
+
 class PDFium:
     def __init__(self):
         self.dname = '/'.join(__file__.split('/')[:-1])
@@ -22,7 +30,7 @@ class PDFium:
     def check(self, msg):
         rc = self.dll.FPDF_GetLastError()
         if rc != 0:
-            raise IOError(rc, msg)
+            raise PDFiumError(rc, msg)
 
     def document(self, fname, password):
         doc = self.dll.FPDF_LoadDocument(fname, password)
