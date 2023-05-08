@@ -37,7 +37,7 @@ class Demo:
         nsig = doc.FPDF_GetSignatureCount(doc.handle)
         print('Numer of signatures:', nsig)
         for n in range(nsig):
-            print('signature:', n+1)
+            print('signature:', n)
             sig = doc.FPDF_GetSignatureObject(doc.handle, n)
             nb = doc.FPDFSignatureObj_GetContents(sig, doc.lib.ffi.NULL, 0)
             if nb:
@@ -62,6 +62,23 @@ class Demo:
             mdp = doc.FPDFSignatureObj_GetDocMDPPermission(sig)
             print('    mdp:', mdp)
 
+    def PageInfo(self, doc, pageno):
+        page = doc.Page(pageno)
+        try:
+            width = page.width()
+            height = page.height()
+            print('page:', pageno, 'size:', width, height)
+            nb = doc.FPDFPage_CountObjects(page.handle)
+            for i in range(nb+1):
+                obj = doc.FPDFPage_GetObject(page.handle, i)
+                objtype = doc.FPDFPageObj_GetType(obj)
+                if objtype == doc.dll.FPDF_PAGEOBJ_TEXT:
+                    print(i, obj, 'text')
+                else:
+                    print(i, obj, objtype)
+        finally:
+            page.close()
+
     def Demo(self):
         fname = sys.argv[1]
         password = self.lib.ffi.NULL
@@ -74,11 +91,10 @@ class Demo:
         try:
             pc = doc.PageCount()
             print('Pages:', pc)
-            self.SavePage(doc, 1)
-            self.SavePage(doc, 2)
             title = doc.Title()
             print('Title:', title)
             self.SigInfo(doc)
+            self.PageInfo(doc, 1)
         finally:
             doc.close()
 
