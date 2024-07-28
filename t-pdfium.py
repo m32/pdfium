@@ -95,6 +95,7 @@ class Demo:
             print('Title:', title)
             self.SigInfo(doc)
             self.PageInfo(doc, 1)
+            self.SavePages(doc)
         finally:
             doc.close()
 

@@ -4,14 +4,6 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_EDIT_H_
-//#define PUBLIC_FPDF_EDIT_H_
-
-//#include <stdint.h>
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
 //#define FPDF_ARGB(a, r, g, b)                                      \
 //  ((uint32_t)(((uint32_t)(b)&0xff) | (((uint32_t)(g)&0xff) << 8) | \
 //              (((uint32_t)(r)&0xff) << 16) | (((uint32_t)(a)&0xff) << 24)))
@@ -92,10 +84,6 @@ typedef struct FPDF_IMAGEOBJ_METADATA {
   int marked_content_id;
 } FPDF_IMAGEOBJ_METADATA;
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Create a new PDF document.
 //
 // Returns a handle to a new document, or NULL on failure.
@@ -126,6 +114,38 @@ extern FPDF_PAGE  FPDFPage_New(FPDF_DOCUMENT document,
 extern void  FPDFPage_Delete(FPDF_DOCUMENT document,
                                                int page_index);
 
+// Experimental API.
+// Move the given pages to a new index position.
+//
+//  page_indices     - the ordered list of pages to move. No duplicates allowed.
+//  page_indices_len - the number of elements in |page_indices|
+//  dest_page_index  - the new index position to which the pages in
+//                     |page_indices| are moved.
+//
+// Returns TRUE on success. If it returns FALSE, the document may be left in an
+// indeterminate state.
+//
+// Example: The PDF document starts out with pages [A, B, C, D], with indices
+// [0, 1, 2, 3].
+//
+// >  Move(doc, [3, 2], 2, 1); // returns true
+// >  // The document has pages [A, D, C, B].
+// >
+// >  Move(doc, [0, 4, 3], 3, 1); // returns false
+// >  // Returned false because index 4 is out of range.
+// >
+// >  Move(doc, [0, 3, 1], 3, 2); // returns false
+// >  // Returned false because index 2 is out of range for 3 page indices.
+// >
+// >  Move(doc, [2, 2], 2, 0); // returns false
+// >  // Returned false because [2, 2] contains duplicates.
+//
+extern FPDF_BOOL 
+FPDF_MovePages(FPDF_DOCUMENT document,
+               const int* page_indices,
+               unsigned long page_indices_len,
+               int dest_page_index);
+
 // Get the rotation of |page|.
 //
 //   page - handle to a page
@@ -147,26 +167,28 @@ extern int  FPDFPage_GetRotation(FPDF_PAGE page);
 //              3 - Rotated 270 degrees clockwise.
 extern void  FPDFPage_SetRotation(FPDF_PAGE page, int rotate);
 
-// Insert |page_obj| into |page|.
+// Insert |page_object| into |page|.
 //
-//   page     - handle to a page
-//   page_obj - handle to a page object. The |page_obj| will be automatically
-//              freed.
-extern void  FPDFPage_InsertObject(FPDF_PAGE page,
-                                                     FPDF_PAGEOBJECT page_obj);
+//   page        - handle to a page
+//   page_object - handle to a page object. The |page_object| will be
+//                 automatically freed.
+extern void 
+FPDFPage_InsertObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_object);
 
 // Experimental API.
-// Remove |page_obj| from |page|.
+// Remove |page_object| from |page|.
 //
-//   page     - handle to a page
-//   page_obj - handle to a page object to be removed.
+//   page        - handle to a page
+//   page_object - handle to a page object to be removed.
 //
 // Returns TRUE on success.
 //
 // Ownership is transferred to the caller. Call FPDFPageObj_Destroy() to free
 // it.
+// Note that when removing a |page_object| of type FPDF_PAGEOBJ_TEXT, all
+// FPDF_TEXTPAGE handles for |page| are no longer valid.
 extern FPDF_BOOL 
-FPDFPage_RemoveObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_obj);
+FPDFPage_RemoveObject(FPDF_PAGE page, FPDF_PAGEOBJECT page_object);
 
 // Get number of page objects inside |page|.
 //
@@ -201,14 +223,14 @@ extern FPDF_BOOL  FPDFPage_HasTransparency(FPDF_PAGE page);
 // |FPDFPage_GenerateContent| or any changes to |page| will be lost.
 extern FPDF_BOOL  FPDFPage_GenerateContent(FPDF_PAGE page);
 
-// Destroy |page_obj| by releasing its resources. |page_obj| must have been
-// created by FPDFPageObj_CreateNew{Path|Rect}() or
+// Destroy |page_object| by releasing its resources. |page_object| must have
+// been created by FPDFPageObj_CreateNew{Path|Rect}() or
 // FPDFPageObj_New{Text|Image}Obj(). This function must be called on
 // newly-created objects if they are not added to a page through
 // FPDFPage_InsertObject() or to an annotation through FPDFAnnot_AppendObject().
 //
-//   page_obj - handle to a page object.
-extern void  FPDFPageObj_Destroy(FPDF_PAGEOBJECT page_obj);
+//   page_object - handle to a page object.
+extern void  FPDFPageObj_Destroy(FPDF_PAGEOBJECT page_object);
 
 // Checks if |page_object| contains transparency.
 //
@@ -250,6 +272,21 @@ FPDFPageObj_Transform(FPDF_PAGEOBJECT page_object,
                       double f);
 
 // Experimental API.
+// Transform |page_object| by the given matrix.
+//
+//   page_object - handle to a page object.
+//   matrix      - the transform matrix.
+//
+// Returns TRUE on success.
+//
+// This can be used to scale, rotate, shear and translate the |page_object|.
+// It is an improved version of FPDFPageObj_Transform() that does not do
+// unnecessary double to float conversions, and only uses 1 parameter for the
+// matrix. It also returns whether the operation succeeded or not.
+extern FPDF_BOOL 
+FPDFPageObj_TransformF(FPDF_PAGEOBJECT page_object, const FS_MATRIX* matrix);
+
+// Experimental API.
 // Get the transform matrix of a page object.
 //
 //   page_object - handle to a page object.
@@ -259,6 +296,11 @@ FPDFPageObj_Transform(FPDF_PAGEOBJECT page_object,
 //   |a c e|
 //   |b d f|
 // and used to scale, rotate, shear and translate the page object.
+//
+// For page objects outside form objects, the matrix values are relative to the
+// page that contains it.
+// For page objects inside form objects, the matrix values are relative to the
+// form that contains it.
 //
 // Returns TRUE on success.
 extern FPDF_BOOL 
@@ -277,7 +319,7 @@ FPDFPageObj_GetMatrix(FPDF_PAGEOBJECT page_object, FS_MATRIX* matrix);
 //
 // Returns TRUE on success.
 extern FPDF_BOOL 
-FPDFPageObj_SetMatrix(FPDF_PAGEOBJECT path, const FS_MATRIX* matrix);
+FPDFPageObj_SetMatrix(FPDF_PAGEOBJECT page_object, const FS_MATRIX* matrix);
 
 // Transform all annotations in |page|.
 //
@@ -308,6 +350,15 @@ extern void  FPDFPage_TransformAnnots(FPDF_PAGE page,
 // Returns a handle to a new image object.
 extern FPDF_PAGEOBJECT 
 FPDFPageObj_NewImageObj(FPDF_DOCUMENT document);
+
+// Experimental API.
+// Get the marked content ID for the object.
+//
+//   page_object - handle to a page object.
+//
+// Returns the page object's marked content ID, or -1 on error.
+extern int 
+FPDFPageObj_GetMarkedContentID(FPDF_PAGEOBJECT page_object);
 
 // Experimental API.
 // Get number of content marks in |page_object|.
@@ -1151,16 +1202,16 @@ FPDFText_SetCharcodes(FPDF_PAGEOBJECT text_object,
                       size_t count);
 
 // Returns a font object loaded from a stream of data. The font is loaded
-// into the document.
+// into the document. Various font data structures, such as the ToUnicode data,
+// are auto-generated based on the inputs.
 //
-// document   - handle to the document.
-// data       - the stream of data, which will be copied by the font object.
-// size       - size of the stream, in bytes.
-// font_type  - FPDF_FONT_TYPE1 or FPDF_FONT_TRUETYPE depending on the font
-// type.
-// cid        - a boolean specifying if the font is a CID font or not.
+// document  - handle to the document.
+// data      - the stream of font data, which will be copied by the font object.
+// size      - the size of the font data, in bytes.
+// font_type - FPDF_FONT_TYPE1 or FPDF_FONT_TRUETYPE depending on the font type.
+// cid       - a boolean specifying if the font is a CID font or not.
 //
-// The loaded font can be closed using FPDFFont_Close.
+// The loaded font can be closed using FPDFFont_Close().
 //
 // Returns NULL on failure
 extern FPDF_FONT  FPDFText_LoadFont(FPDF_DOCUMENT document,
@@ -1177,11 +1228,35 @@ extern FPDF_FONT  FPDFText_LoadFont(FPDF_DOCUMENT document,
 // document   - handle to the document.
 // font       - string containing the font name, without spaces.
 //
-// The loaded font can be closed using FPDFFont_Close.
+// The loaded font can be closed using FPDFFont_Close().
 //
 // Returns NULL on failure.
 extern FPDF_FONT 
 FPDFText_LoadStandardFont(FPDF_DOCUMENT document, FPDF_BYTESTRING font);
+
+// Experimental API.
+// Returns a font object loaded from a stream of data for a type 2 CID font. The
+// font is loaded into the document. Unlike FPDFText_LoadFont(), the ToUnicode
+// data and the CIDToGIDMap data are caller provided, instead of auto-generated.
+//
+// document                 - handle to the document.
+// font_data                - the stream of font data, which will be copied by
+//                            the font object.
+// font_data_size           - the size of the font data, in bytes.
+// to_unicode_cmap          - the ToUnicode data.
+// cid_to_gid_map_data      - the stream of CIDToGIDMap data.
+// cid_to_gid_map_data_size - the size of the CIDToGIDMap data, in bytes.
+//
+// The loaded font can be closed using FPDFFont_Close().
+//
+// Returns NULL on failure.
+extern FPDF_FONT 
+FPDFText_LoadCidType2Font(FPDF_DOCUMENT document,
+                          const uint8_t* font_data,
+                          uint32_t font_data_size,
+                          FPDF_BYTESTRING to_unicode_cmap,
+                          const uint8_t* cid_to_gid_map_data,
+                          uint32_t cid_to_gid_map_data_size);
 
 // Get the font size of a text object.
 //
@@ -1278,20 +1353,20 @@ FPDFTextObj_GetRenderedBitmap(FPDF_DOCUMENT document,
 extern FPDF_FONT  FPDFTextObj_GetFont(FPDF_PAGEOBJECT text);
 
 // Experimental API.
-// Get the font name of a font.
+// Get the family name of a font.
 //
 // font   - the handle to the font object.
 // buffer - the address of a buffer that receives the font name.
 // length - the size, in bytes, of |buffer|.
 //
-// Returns the number of bytes in the font name (including the trailing NUL
+// Returns the number of bytes in the family name (including the trailing NUL
 // character) on success, 0 on error.
 //
 // Regardless of the platform, the |buffer| is always in UTF-8 encoding.
 // If |length| is less than the returned length, or |buffer| is NULL, |buffer|
 // will not be modified.
 extern unsigned long 
-FPDFFont_GetFontName(FPDF_FONT font, char* buffer, unsigned long length);
+FPDFFont_GetFamilyName(FPDF_FONT font, char* buffer, unsigned long length);
 
 // Experimental API.
 // Get the decoded data from the |font| object.
@@ -1450,9 +1525,3 @@ FPDFFormObj_CountObjects(FPDF_PAGEOBJECT form_object);
 // Returns the handle to the page object, or NULL on error.
 extern FPDF_PAGEOBJECT 
 FPDFFormObj_GetObject(FPDF_PAGEOBJECT form_object, unsigned long index);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_EDIT_H_

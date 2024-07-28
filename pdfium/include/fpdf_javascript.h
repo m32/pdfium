@@ -2,16 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-//#ifndef PUBLIC_FPDF_JAVASCRIPT_H_
-//#define PUBLIC_FPDF_JAVASCRIPT_H_
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Experimental API.
 // Get the number of JavaScript actions in |document|.
 //
@@ -69,9 +59,3 @@ extern unsigned long
 FPDFJavaScriptAction_GetScript(FPDF_JAVASCRIPT_ACTION javascript,
                                FPDF_WCHAR* buffer,
                                unsigned long buflen);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_JAVASCRIPT_H_

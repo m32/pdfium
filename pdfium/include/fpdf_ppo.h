@@ -4,16 +4,6 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_PPO_H_
-//#define PUBLIC_FPDF_PPO_H_
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
-
 // Experimental API.
 // Import pages to a FPDF_DOCUMENT.
 //
@@ -107,9 +97,3 @@ FPDF_NewFormObjectFromXObject(FPDF_XOBJECT xobject);
 // Returns TRUE on success.
 extern FPDF_BOOL 
 FPDF_CopyViewerPreferences(FPDF_DOCUMENT dest_doc, FPDF_DOCUMENT src_doc);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_PPO_H_

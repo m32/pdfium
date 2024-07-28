@@ -4,16 +4,6 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_DOC_H_
-//#define PUBLIC_FPDF_DOC_H_
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Unsupported action type.
 #define PDFACTION_UNSUPPORTED 0
 // Go to a destination within current document.
@@ -53,6 +43,8 @@ typedef enum {
 //
 // Returns a handle to the first child of |bookmark| or the first top-level
 // bookmark item. NULL if no child or top-level bookmark found.
+// Note that another name for the bookmarks is the document outline, as
+// described in ISO 32000-1:2008, section 12.3.3.
 extern FPDF_BOOKMARK 
 FPDFBookmark_GetFirstChild(FPDF_DOCUMENT document, FPDF_BOOKMARK bookmark);
 
@@ -428,9 +420,3 @@ FPDF_GetPageLabel(FPDF_DOCUMENT document,
                   int page_index,
                   void* buffer,
                   unsigned long buflen);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_DOC_H_

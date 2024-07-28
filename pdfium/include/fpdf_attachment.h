@@ -2,16 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-//#ifndef PUBLIC_FPDF_ATTACHMENT_H_
-//#define PUBLIC_FPDF_ATTACHMENT_H_
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Experimental API.
 // Get the number of embedded files in |document|.
 //
@@ -171,9 +161,3 @@ FPDFAttachment_GetFile(FPDF_ATTACHMENT attachment,
                        void* buffer,
                        unsigned long buflen,
                        unsigned long* out_buflen);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_ATTACHMENT_H_

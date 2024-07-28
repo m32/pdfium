@@ -4,18 +4,6 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_EXT_H_
-//#define PUBLIC_FPDF_EXT_H_
-
-//#include <time.h>
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Unsupported XFA form.
 #define FPDF_UNSP_DOC_XFAFORM 1
 // Unsupported portable collection.
@@ -111,9 +99,3 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 //
 // The page mode defines how the document should be initially displayed.
 extern int  FPDFDoc_GetPageMode(FPDF_DOCUMENT document);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_EXT_H_

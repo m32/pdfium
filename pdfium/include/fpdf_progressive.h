@@ -4,42 +4,27 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_PROGRESSIVE_H_
-//#define PUBLIC_FPDF_PROGRESSIVE_H_
-
-// clang-format off
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
 // Flags for progressive process status.
 #define FPDF_RENDER_READY 0
 #define FPDF_RENDER_TOBECONTINUED 1
 #define FPDF_RENDER_DONE 2
 #define FPDF_RENDER_FAILED 3
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
-
 // IFPDF_RENDERINFO interface.
 typedef struct _IFSDK_PAUSE {
-  /*
-   * Version number of the interface. Currently must be 1.
-   */
+  // Version number of the interface. Currently must be 1.
   int version;
 
-  /*
-   * Method: NeedToPauseNow
-   *           Check if we need to pause a progressive process now.
-   * Interface Version:
-   *           1
-   * Implementation Required:
-   *           yes
-   * Parameters:
-   *           pThis       -   Pointer to the interface structure itself
-   * Return Value:
-   *           Non-zero for pause now, 0 for continue.
-   */
+  // Method: NeedToPauseNow
+  //           Check if we need to pause a progressive process now.
+  // Interface Version:
+  //           1
+  // Implementation Required:
+  //           yes
+  // Parameters:
+  //           pThis       -   Pointer to the interface structure itself
+  // Return Value:
+  //           Non-zero for pause now, 0 for continue.
   FPDF_BOOL (*NeedToPauseNow)(struct _IFSDK_PAUSE* pThis);
 
   // A user defined data pointer, used by user's application. Can be NULL.
@@ -151,9 +136,3 @@ extern int  FPDF_RenderPage_Continue(FPDF_PAGE page,
 // Return value:
 //          None.
 extern void  FPDF_RenderPage_Close(FPDF_PAGE page);
-
-//#ifdef __cplusplus
-//}
-//#endif
-
-//#endif  // PUBLIC_FPDF_PROGRESSIVE_H_

@@ -3,6 +3,31 @@ import cffi
 
 from .document import Document
 
+# fpdf_formfill.h
+def IS_XFA_FORMFIELD(t, lib):
+    return t in (
+        lib.ffi.FPDF_FORMFIELD_XFA,
+        lib.ffi.FPDF_FORMFIELD_XFA_CHECKBOX,
+        lib.ffi.FPDF_FORMFIELD_XFA_COMBOBOX,
+        lib.ffi.FPDF_FORMFIELD_XFA_IMAGEFIELD,
+        lib.ffi.FPDF_FORMFIELD_XFA_LISTBOX,
+        lib.ffi.FPDF_FORMFIELD_XFA_PUSHBUTTON,
+        lib.ffi.FPDF_FORMFIELD_XFA_SIGNATURE,
+        lib.ffi.FPDF_FORMFIELD_XFA_TEXTFIELD,
+    )
+
+# fpdf_edit.h
+def FPDF_ARGB(a, r, g, b):
+    return (b&0xff) | ((g&0xff)<<8) | ((r&0xff)<<16) | ((a&0xff)<<26)
+def FPDF_GetBValue(argb):
+    return argb&0xff
+def FPDF_GetGValue(argb):
+    return (argb>>8)&0xff
+def FPDF_GetRValue(argb):
+    return (argb>>16)&0xff
+def FPDF_GetAValue(argb):
+    return (argb>>24)&0xff
+
 class PDFiumError(Exception):
     def __init__(self, no, msg):
         self.no = no
@@ -16,7 +41,7 @@ class PDFium:
         self.dname = '/'.join(__file__.split('/')[:-1])
         self.ffi = cffi.FFI()
         self.installffi()
-        dllname = os.path.join(self.dname, 'libpdfium.so')
+        dllname = os.path.join(self.dname, 'libpdfiumjs.so')
         self.dll = self.ffi.dlopen(dllname)
 
         init_config = self.ffi.new("FPDF_LIBRARY_CONFIG *", (2,))

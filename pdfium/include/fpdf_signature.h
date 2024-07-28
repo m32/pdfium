@@ -2,16 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-//#ifndef PUBLIC_FPDF_SIGNATURE_H_
-//#define PUBLIC_FPDF_SIGNATURE_H_
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
-
 // Experimental API.
 // Function: FPDF_GetSignatureCount
 //          Get total number of signatures in the document.
@@ -147,9 +137,3 @@ FPDFSignatureObj_GetTime(FPDF_SIGNATURE signature,
 //          Returns the permission (1, 2 or 3) on success, 0 on error.
 extern unsigned int 
 FPDFSignatureObj_GetDocMDPPermission(FPDF_SIGNATURE signature);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_SIGNATURE_H_

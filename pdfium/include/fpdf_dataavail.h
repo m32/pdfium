@@ -4,14 +4,6 @@
 
 // Original code copyright 2014 Foxit Software Inc. http://www.foxitsoftware.com
 
-//#ifndef PUBLIC_FPDF_DATAAVAIL_H_
-//#define PUBLIC_FPDF_DATAAVAIL_H_
-
-//#include <stddef.h>
-
-// NOLINTNEXTLINE(build/include)
-//#include "fpdfview.h"
-
 #define PDF_LINEARIZATION_UNKNOWN -1
 #define PDF_NOT_LINEARIZED 0
 #define PDF_LINEARIZED 1
@@ -24,10 +16,6 @@
 #define PDF_FORM_NOTAVAIL 0
 #define PDF_FORM_AVAIL 1
 #define PDF_FORM_NOTEXIST 2
-
-//#ifdef __cplusplus
-//extern "C" {
-//#endif  // __cplusplus
 
 // Interface for checking whether sections of the file are available.
 typedef struct _FX_FILEAVAIL {
@@ -196,9 +184,3 @@ extern int  FPDFAvail_IsFormAvail(FPDF_AVAIL avail,
 // |PDF_LINEARIZATION_UNKNOWN| as there is insufficient information to determine
 // if the PDF is linearlized.
 extern int  FPDFAvail_IsLinearized(FPDF_AVAIL avail);
-
-//#ifdef __cplusplus
-//}  // extern "C"
-//#endif  // __cplusplus
-
-//#endif  // PUBLIC_FPDF_DATAAVAIL_H_
