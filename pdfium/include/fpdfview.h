@@ -15,9 +15,12 @@
 // NOTE: External docs refer to this file as "fpdfview.h", so do not rename
 // despite lack of consistency with other public files.
 
+#define PDF_ENABLE_XFA 1
+//#ifdef PDF_ENABLE_XFA
 // PDF_USE_XFA is set in confirmation that this version of PDFium can support
 // XFA forms as requested by the PDF_ENABLE_XFA setting.
 #define PDF_USE_XFA 1
+//#endif  // PDF_ENABLE_XFA
 
 // PDF object types
 #define FPDF_OBJECT_UNKNOWN 0
@@ -199,6 +202,15 @@ typedef enum {
   FPDF_RENDERERTYPE_SKIA = 1,
 } FPDF_RENDERER_TYPE;
 
+// PDF font library types - Experimental.
+// Selection of font backend library to use.
+typedef enum {
+  // FreeType - https://freetype.org/
+  FPDF_FONTBACKENDTYPE_FREETYPE = 0,
+  // Fontations - https://github.com/googlefonts/fontations/
+  FPDF_FONTBACKENDTYPE_FONTATIONS = 1,
+} FPDF_FONT_BACKEND_TYPE;
+
 // Process-wide options for initializing the library.
 typedef struct FPDF_LIBRARY_CONFIG_ {
   // Version number of the interface. Currently must be 2.
@@ -229,13 +241,26 @@ typedef struct FPDF_LIBRARY_CONFIG_ {
 
   // Version 4 - Experimental.
 
-  // Explicit specification of core renderer to use. |m_RendererType| must be
-  // a valid value for |FPDF_LIBRARY_CONFIG| versions of this level or higher,
-  // or else the initialization will fail with an immediate crash.
+  // Explicit specification of 2D graphics rendering library to use.
+  // |m_RendererType| must be a valid value for |FPDF_LIBRARY_CONFIG| versions
+  // of this level or higher, or else the initialization will fail with an
+  // immediate crash.
   // Note that use of a specified |FPDF_RENDERER_TYPE| value for which the
-  // corresponding render library is not included in the build will similarly
-  // fail with an immediate crash.
+  // corresponding 2D graphics rendering library is not included in the build
+  // will similarly fail with an immediate crash.
   FPDF_RENDERER_TYPE m_RendererType;
+
+  // Version 5 - Experimental.
+
+  // Explicit specification of font library to use when |m_RendererType| is set
+  // to |FPDF_RENDERERTYPE_SKIA|.
+  // |m_FontLibraryType| must be a valid value for |FPDF_LIBRARY_CONFIG|
+  // versions of this level or higher, or else the initialization will fail with
+  // an immediate crash.
+  // Note that use of a specified |FPDF_FONT_BACKEND_TYPE| value for which the
+  // corresponding font library is not included in the build will similarly fail
+  // with an immediate crash.
+  FPDF_FONT_BACKEND_TYPE m_FontLibraryType;
 } FPDF_LIBRARY_CONFIG;
 
 // Function: FPDF_InitLibraryWithConfig
@@ -293,6 +318,7 @@ extern void  FPDF_DestroyLibrary();
 extern void  FPDF_SetSandBoxPolicy(FPDF_DWORD policy,
                                                      FPDF_BOOL enable);
 
+//#if defined(_WIN32)
 // Experimental API.
 // Function: FPDF_SetPrintMode
 //          Set printing mode when printing on Windows.
@@ -318,7 +344,8 @@ extern void  FPDF_SetSandBoxPolicy(FPDF_DWORD policy,
 //                 via ExtEscape() in PASSTHROUGH mode.
 // Return value:
 //          True if successful, false if unsuccessful (typically invalid input).
-//WIN32 extern FPDF_BOOL  FPDF_SetPrintMode(int mode);
+//extern FPDF_BOOL  FPDF_SetPrintMode(int mode);
+//#endif  // defined(_WIN32)
 
 // Function: FPDF_LoadDocument
 //          Open and load a PDF document.
@@ -541,8 +568,10 @@ extern FPDF_BOOL  FPDF_GetFileVersion(FPDF_DOCUMENT doc,
 #define FPDF_ERR_PASSWORD 4   // Password required or incorrect password.
 #define FPDF_ERR_SECURITY 5   // Unsupported security scheme.
 #define FPDF_ERR_PAGE 6       // Page not found or content error.
+//#ifdef PDF_ENABLE_XFA
 #define FPDF_ERR_XFALOAD 7    // Load XFA error.
 #define FPDF_ERR_XFALAYOUT 8  // Layout XFA error.
+//#endif  // PDF_ENABLE_XFA
 
 // Function: FPDF_GetLastError
 //          Get last error code when a function fails.
@@ -653,6 +682,8 @@ extern FPDF_PAGE  FPDF_LoadPage(FPDF_DOCUMENT document,
 // Return value:
 //          Page width (excluding non-displayable area) measured in points.
 //          One point is 1/72 inch (around 0.3528 mm).
+// Comments:
+//          Changing the rotation of |page| affects the return value.
 extern float  FPDF_GetPageWidthF(FPDF_PAGE page);
 
 // Function: FPDF_GetPageWidth
@@ -665,6 +696,8 @@ extern float  FPDF_GetPageWidthF(FPDF_PAGE page);
 // Note:
 //          Prefer FPDF_GetPageWidthF() above. This will be deprecated in the
 //          future.
+// Comments:
+//          Changing the rotation of |page| affects the return value.
 extern double  FPDF_GetPageWidth(FPDF_PAGE page);
 
 // Experimental API
@@ -675,6 +708,8 @@ extern double  FPDF_GetPageWidth(FPDF_PAGE page);
 // Return value:
 //          Page height (excluding non-displayable area) measured in points.
 //          One point is 1/72 inch (around 0.3528 mm)
+// Comments:
+//          Changing the rotation of |page| affects the return value.
 extern float  FPDF_GetPageHeightF(FPDF_PAGE page);
 
 // Function: FPDF_GetPageHeight
@@ -687,6 +722,8 @@ extern float  FPDF_GetPageHeightF(FPDF_PAGE page);
 // Note:
 //          Prefer FPDF_GetPageHeightF() above. This will be deprecated in the
 //          future.
+// Comments:
+//          Changing the rotation of |page| affects the return value.
 extern double  FPDF_GetPageHeight(FPDF_PAGE page);
 
 // Experimental API.
@@ -781,6 +818,7 @@ typedef struct FPDF_COLORSCHEME_ {
   FPDF_DWORD text_stroke_color;
 } FPDF_COLORSCHEME;
 
+//#ifdef _WIN32
 // Function: FPDF_RenderPage
 //          Render contents of a page to a device (screen, bitmap, or printer).
 //          This function is only supported on Windows.
@@ -801,15 +839,18 @@ typedef struct FPDF_COLORSCHEME_ {
 //          flags       -   0 for normal display, or combination of flags
 //                          defined above.
 // Return value:
-//          None.
-//WIN32 extern void  FPDF_RenderPage(HDC dc,
-//                                               FPDF_PAGE page,
-//                                               int start_x,
-//                                               int start_y,
-//                                               int size_x,
-//                                               int size_y,
-//                                               int rotate,
-//                                               int flags);
+//          Returns true if the page is rendered successfully, false otherwise.
+/*
+extern FPDF_BOOL  FPDF_RenderPage(HDC dc,
+                                                    FPDF_PAGE page,
+                                                    int start_x,
+                                                    int start_y,
+                                                    int size_x,
+                                                    int size_y,
+                                                    int rotate,
+                                                    int flags);
+*/
+//#endif
 
 // Function: FPDF_RenderPageBitmap
 //          Render contents of a page to a device independent bitmap.
@@ -871,6 +912,7 @@ FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP bitmap,
                                 const FS_RECTF* clipping,
                                 int flags);
 
+//#if defined(PDF_USE_SKIA)
 // Experimental API.
 // Function: FPDF_RenderPageSkia
 //          Render contents of a page to a Skia SkCanvas.
@@ -881,10 +923,13 @@ FPDF_RenderPageBitmapWithMatrix(FPDF_BITMAP bitmap,
 //          size_y      -   Vertical size (in pixels) for displaying the page.
 // Return value:
 //          None.
-//extern void  FPDF_RenderPageSkia(FPDF_SKIA_CANVAS canvas,
-//                                                   FPDF_PAGE page,
-//                                                   int size_x,
-//                                                   int size_y);
+/*
+extern void  FPDF_RenderPageSkia(FPDF_SKIA_CANVAS canvas,
+                                                   FPDF_PAGE page,
+                                                   int size_x,
+                                                   int size_y);
+*/
+//#endif
 
 // Function: FPDF_ClosePage
 //          Close a loaded PDF page.
@@ -1027,6 +1072,7 @@ extern FPDF_BITMAP  FPDFBitmap_Create(int width,
 
 // More DIB formats
 // Unknown or unsupported format.
+// All of the colors are listed in order of LSB to MSB.
 #define FPDFBitmap_Unknown 0
 // Gray scale bitmap, one byte per pixel.
 #define FPDFBitmap_Gray 1
@@ -1035,7 +1081,13 @@ extern FPDF_BITMAP  FPDFBitmap_Create(int width,
 // 4 bytes per pixel, byte order: blue, green, red, unused.
 #define FPDFBitmap_BGRx 3
 // 4 bytes per pixel, byte order: blue, green, red, alpha.
+// Pixel components are independent of alpha.
 #define FPDFBitmap_BGRA 4
+// 4 bytes per pixel, byte order: blue, green, red, alpha.
+// Pixel components are premultiplied by alpha.
+// Note that this is experimental and only supported when rendering with
+// |FPDF_RENDERER_TYPE| is set to |FPDF_RENDERERTYPE_SKIA|.
+#define FPDFBitmap_BGRA_Premul 5
 
 // Function: FPDFBitmap_CreateEx
 //          Create a device independent bitmap (FXDIB)
@@ -1102,7 +1154,7 @@ extern int  FPDFBitmap_GetFormat(FPDF_BITMAP bitmap);
 //          color       -   A 32-bit value specifing the color, in 8888 ARGB
 //                          format.
 // Return value:
-//          None.
+//          Returns whether the operation succeeded or not.
 // Comments:
 //          This function sets the color and (optionally) alpha value in the
 //          specified region of the bitmap.
@@ -1112,12 +1164,12 @@ extern int  FPDFBitmap_GetFormat(FPDF_BITMAP bitmap);
 //          background will be replaced by the source color and the alpha.
 //
 //          If the alpha channel is not used, the alpha parameter is ignored.
-extern void  FPDFBitmap_FillRect(FPDF_BITMAP bitmap,
-                                                   int left,
-                                                   int top,
-                                                   int width,
-                                                   int height,
-                                                   FPDF_DWORD color);
+extern FPDF_BOOL  FPDFBitmap_FillRect(FPDF_BITMAP bitmap,
+                                                        int left,
+                                                        int top,
+                                                        int width,
+                                                        int height,
+                                                        FPDF_DWORD color);
 
 // Function: FPDFBitmap_GetBuffer
 //          Get data buffer of a bitmap.
@@ -1361,6 +1413,7 @@ extern FPDF_BOOL  FPDF_GetXFAPacketContent(
     unsigned long buflen,
     unsigned long* out_buflen);
 
+//#ifdef PDF_ENABLE_V8
 // Function: FPDF_GetRecommendedV8Flags
 //          Returns a space-separated string of command line flags that are
 //          recommended to be passed into V8 via V8::SetFlagsFromString()
@@ -1389,7 +1442,9 @@ extern const char*  FPDF_GetRecommendedV8Flags();
 //          Can only be called when the library is in an uninitialized or
 //          destroyed state.
 extern void*  FPDF_GetArrayBufferAllocatorSharedInstance();
+//#endif  // PDF_ENABLE_V8
 
+//#ifdef PDF_ENABLE_XFA
 // Function: FPDF_BStr_Init
 //          Helper function to initialize a FPDF_BSTR.
 extern FPDF_RESULT  FPDF_BStr_Init(FPDF_BSTR* bstr);
@@ -1403,3 +1458,4 @@ extern FPDF_RESULT  FPDF_BStr_Set(FPDF_BSTR* bstr,
 // Function: FPDF_BStr_Clear
 //          Helper function to clear a FPDF_BSTR.
 extern FPDF_RESULT  FPDF_BStr_Clear(FPDF_BSTR* bstr);
+//#endif  // PDF_ENABLE_XFA

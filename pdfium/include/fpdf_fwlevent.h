@@ -6,15 +6,15 @@
 
 // Key flags.
 typedef enum {
-  FWL_EVENTFLAG_ShiftKey = 1 << 0,
-  FWL_EVENTFLAG_ControlKey = 1 << 1,
-  FWL_EVENTFLAG_AltKey = 1 << 2,
-  FWL_EVENTFLAG_MetaKey = 1 << 3,
-  FWL_EVENTFLAG_KeyPad = 1 << 4,
-  FWL_EVENTFLAG_AutoRepeat = 1 << 5,
-  FWL_EVENTFLAG_LeftButtonDown = 1 << 6,
-  FWL_EVENTFLAG_MiddleButtonDown = 1 << 7,
-  FWL_EVENTFLAG_RightButtonDown = 1 << 8,
+  FWL_EVENTFLAG_ShiftKey = 1,//1 << 0,
+  FWL_EVENTFLAG_ControlKey = 2,//1 << 1,
+  FWL_EVENTFLAG_AltKey = 4,//1 << 2,
+  FWL_EVENTFLAG_MetaKey = 8,//1 << 3,
+  FWL_EVENTFLAG_KeyPad = 16,//1 << 4,
+  FWL_EVENTFLAG_AutoRepeat = 32,//1 << 5,
+  FWL_EVENTFLAG_LeftButtonDown = 64,//1 << 6,
+  FWL_EVENTFLAG_MiddleButtonDown = 128,//1 << 7,
+  FWL_EVENTFLAG_RightButtonDown = 256,//1 << 8,
 } FWL_EVENTFLAG;
 
 // Virtual keycodes.

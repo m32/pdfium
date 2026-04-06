@@ -42,7 +42,7 @@
 #define FPDF_ANNOT_FLAG_NOVIEW 32 //(1 << 5)
 #define FPDF_ANNOT_FLAG_READONLY 64 //(1 << 6)
 #define FPDF_ANNOT_FLAG_LOCKED 128 //(1 << 7)
-#define FPDF_ANNOT_FLAG_TOGGLENOVIEW 256 //(1 << 8)
+#define FPDF_ANNOT_FLAG_TOGGLENOVIEW 256//(1 << 8)
 
 #define FPDF_ANNOT_APPEARANCEMODE_NORMAL 0
 #define FPDF_ANNOT_APPEARANCEMODE_ROLLOVER 1
@@ -274,7 +274,7 @@ FPDFAnnot_RemoveObject(FPDF_ANNOTATION annot, int index);
 // Experimental API.
 // Set the color of an annotation. Fails when called on annotations with
 // appearance streams already defined; instead use
-// FPDFPath_Set{Stroke|Fill}Color().
+// FPDFPageObj_Set{Stroke|Fill}Color().
 //
 //   annot    - handle to an annotation.
 //   type     - type of the color to be set.
@@ -293,7 +293,7 @@ extern FPDF_BOOL  FPDFAnnot_SetColor(FPDF_ANNOTATION annot,
 // Get the color of an annotation. If no color is specified, default to yellow
 // for highlight annotation, black for all else. Fails when called on
 // annotations with appearance streams already defined; instead use
-// FPDFPath_Get{Stroke|Fill}Color().
+// FPDFPageObj_Get{Stroke|Fill}Color().
 //
 //   annot    - handle to an annotation.
 //   type     - type of the color requested.
@@ -671,6 +671,20 @@ FPDFAnnot_GetFormFieldFlags(FPDF_FORMHANDLE handle,
                             FPDF_ANNOTATION annot);
 
 // Experimental API.
+// Sets the form field flags for an interactive form annotation.
+//
+//   handle       -   the handle to the form fill module, returned by
+//                    FPDFDOC_InitFormFillEnvironment().
+//   annot        -   handle to an interactive form annotation.
+//   flags        -   the form field flags to be set.
+//
+// Returns true if successful.
+extern FPDF_BOOL 
+FPDFAnnot_SetFormFieldFlags(FPDF_FORMHANDLE handle,
+                            FPDF_ANNOTATION annot,
+                            int flags);
+
+// Experimental API.
 // Retrieves an interactive form annotation whose rectangle contains a given
 // point on a page. Must call FPDFPage_CloseAnnot() when the annotation returned
 // is no longer needed.
@@ -829,6 +843,27 @@ extern FPDF_BOOL
 FPDFAnnot_GetFontSize(FPDF_FORMHANDLE hHandle,
                       FPDF_ANNOTATION annot,
                       float* value);
+
+// Experimental API.
+// Set the text color of an annotation.
+//
+//   handle   - handle to the form fill module, returned by
+//              FPDFDOC_InitFormFillEnvironment.
+//   annot    - handle to an annotation.
+//   R        - the red component for the text color.
+//   G        - the green component for the text color.
+//   B        - the blue component for the text color.
+//
+// Returns true if successful.
+//
+// Currently supported subtypes: freetext.
+// The range for the color components is 0 to 255.
+extern FPDF_BOOL 
+FPDFAnnot_SetFontColor(FPDF_FORMHANDLE handle,
+                       FPDF_ANNOTATION annot,
+                       unsigned int R,
+                       unsigned int G,
+                       unsigned int B);
 
 // Experimental API.
 // Get the RGB value of the font color for an |annot| with variable text.

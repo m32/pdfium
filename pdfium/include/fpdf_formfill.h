@@ -17,7 +17,7 @@
 #define JSPLATFORM_ALERT_BUTTON_OKCANCEL 1     // OK & Cancel buttons
 #define JSPLATFORM_ALERT_BUTTON_YESNO 2        // Yes & No buttons
 #define JSPLATFORM_ALERT_BUTTON_YESNOCANCEL 3  // Yes, No & Cancel buttons
-#define JSPLATFORM_ALERT_BUTTON_DEFAULT 0 // JSPLATFORM_ALERT_BUTTON_OK
+#define JSPLATFORM_ALERT_BUTTON_DEFAULT 0 //JSPLATFORM_ALERT_BUTTON_OK
 
 #define JSPLATFORM_ALERT_ICON_ERROR 0     // Error
 #define JSPLATFORM_ALERT_ICON_WARNING 1   // Warning
@@ -1577,15 +1577,19 @@ FORM_SetFocusedAnnot(FPDF_FORMHANDLE handle, FPDF_ANNOTATION annot);
 
 #define FPDF_FORMFIELD_COUNT 16
 
-//#define IS_XFA_FORMFIELD(type)                  \
-//  (((type) == FPDF_FORMFIELD_XFA) ||            \
-//   ((type) == FPDF_FORMFIELD_XFA_CHECKBOX) ||   \
-//   ((type) == FPDF_FORMFIELD_XFA_COMBOBOX) ||   \
-//   ((type) == FPDF_FORMFIELD_XFA_IMAGEFIELD) || \
-//   ((type) == FPDF_FORMFIELD_XFA_LISTBOX) ||    \
-//   ((type) == FPDF_FORMFIELD_XFA_PUSHBUTTON) || \
-//   ((type) == FPDF_FORMFIELD_XFA_SIGNATURE) ||  \
-//   ((type) == FPDF_FORMFIELD_XFA_TEXTFIELD))
+/*
+#ifdef PDF_ENABLE_XFA
+#define IS_XFA_FORMFIELD(type)                  \
+  (((type) == FPDF_FORMFIELD_XFA) ||            \
+   ((type) == FPDF_FORMFIELD_XFA_CHECKBOX) ||   \
+   ((type) == FPDF_FORMFIELD_XFA_COMBOBOX) ||   \
+   ((type) == FPDF_FORMFIELD_XFA_IMAGEFIELD) || \
+   ((type) == FPDF_FORMFIELD_XFA_LISTBOX) ||    \
+   ((type) == FPDF_FORMFIELD_XFA_PUSHBUTTON) || \
+   ((type) == FPDF_FORMFIELD_XFA_SIGNATURE) ||  \
+   ((type) == FPDF_FORMFIELD_XFA_TEXTFIELD))
+#endif  // PDF_ENABLE_XFA
+*/
 
 // Function: FPDFPage_HasFormFieldAtPoint
 //     Get the form field type by point.
@@ -1719,15 +1723,19 @@ extern void  FPDF_FFLDraw(FPDF_FORMHANDLE hHandle,
                                             int rotate,
                                             int flags);
 
-//extern void  FPDF_FFLDrawSkia(FPDF_FORMHANDLE hHandle,
-//                                                FPDF_SKIA_CANVAS canvas,
-//                                                FPDF_PAGE page,
-//                                                int start_x,
-//                                                int start_y,
-//                                                int size_x,
-//                                                int size_y,
-//                                                int rotate,
-//                                                int flags);
+/*
+#if defined(PDF_USE_SKIA)
+extern void  FPDF_FFLDrawSkia(FPDF_FORMHANDLE hHandle,
+                                                FPDF_SKIA_CANVAS canvas,
+                                                FPDF_PAGE page,
+                                                int start_x,
+                                                int start_y,
+                                                int size_x,
+                                                int size_y,
+                                                int rotate,
+                                                int flags);
+#endif
+*/
 
 // Experimental API
 // Function: FPDF_GetFormType

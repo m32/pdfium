@@ -41,7 +41,7 @@ class PDFium:
         self.dname = '/'.join(__file__.split('/')[:-1])
         self.ffi = cffi.FFI()
         self.installffi()
-        dllname = os.path.join(self.dname, 'libpdfiumjs.so')
+        dllname = os.path.join(self.dname, 'libpdfium.so')
         self.dll = self.ffi.dlopen(dllname)
 
         init_config = self.ffi.new("FPDF_LIBRARY_CONFIG *", (2,))
@@ -87,5 +87,7 @@ class PDFium:
             'fpdf_thumbnail.h',
             'fpdf_transformpage.h',
         ):
-            data = open(os.path.join(self.dname, 'include', fname), 'rt').read()
+            fqname = os.path.join(self.dname, 'include', fname)
+            #print(fqname)
+            data = open(fqname, 'rt').read()
             self.ffi.cdef(data, packed=True)

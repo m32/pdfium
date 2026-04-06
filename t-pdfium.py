@@ -80,7 +80,8 @@ class Demo:
             page.close()
 
     def Demo(self):
-        fname = sys.argv[1]
+        #fname = sys.argv[1]
+        fname = '/devel/01-mirror-sf/00-book/BSI_TR-03110_Part-3-V2_2.pdf'
         password = self.lib.ffi.NULL
         print('File:', fname)
         try:

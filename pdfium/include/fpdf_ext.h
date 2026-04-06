@@ -64,6 +64,7 @@ FSDK_SetUnSpObjProcessHandler(UNSUPPORT_INFO* unsp_info);
 //
 //   func - Function pointer to alternate implementation of time(), or
 //          NULL to restore to actual time() call itself.
+
 //extern void  FSDK_SetTimeFunction(time_t (*func)());
 
 // Set replacement function for calls to localtime().
