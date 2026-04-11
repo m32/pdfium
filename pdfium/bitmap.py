@@ -38,14 +38,8 @@ class Bitmap:
         b = self.FPDFBitmap_GetBuffer(self.handle)
         w = self.width()
         h = self.height()
-        buffer = self.lib.ffi.buffer(b, w * h * 4) # RGBA
+        buffer = self.lib.ffi.buffer(b, w * h * 3) # RGB
         b = bytes(buffer)
 
-        # for png images
-        img = Image.frombuffer("RGBA", (w, h), b, "raw", "BGRA", 0, 1)
+        img = Image.frombuffer("RGB", (w, h), b, "raw", "BGR", w*3, 1)
         return img
-
-        # for jpeg images
-        bmp = Image.new("RGB", (w, h), (255, 255, 255))
-        bmp.paste(img, mask=img.split()[3]) # remove the alpha channel
-        return bmp

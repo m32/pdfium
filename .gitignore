@@ -1,3 +1,4 @@
 __pycache__/
-pdfium-v8-linux-x64.tgz
-pdfium-wasm.tgz
+*.tgz
+*.pdf
+*.png

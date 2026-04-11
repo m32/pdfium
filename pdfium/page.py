@@ -52,6 +52,8 @@ class Page:
         return nb, b
 
     def render(self, x, y, width, height, rotate, flags):
-        bitmap = self.FPDFBitmap_Create(width, height, 0)
+        #bitmap = self.FPDFBitmap_Create(width, height, 0)
+        bitmap = self.FPDFBitmap_CreateEx(width, height, self.lib.dll.FPDFBitmap_BGR, self.lib.ffi.NULL, width*3)
+        self.FPDFBitmap_FillRect(bitmap, x, y, width, height, 0xFFFFFFFF)
         self.FPDF_RenderPageBitmap(bitmap, self.handle, x, y, width, height, rotate, flags)
         return Bitmap(self.lib, bitmap)

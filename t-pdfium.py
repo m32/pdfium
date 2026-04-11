@@ -1,22 +1,23 @@
 #!/usr/bin/env vpython3
 import sys
 import time
+import math
 from pdfium.pdfium import PDFium
 
 class Demo:
     def __init__(self, lib):
         self.lib = lib
 
-    def SavePage(self, doc, pageno, scale=6):
+    def SavePage(self, doc, pageno, scale=1):
         page = doc.Page(pageno)
-        width = int(page.width() * scale)
-        height = int(page.height() * scale)
+        width = math.ceil(page.width() * scale)
+        height = math.ceil(page.height() * scale)
         print('page:', pageno, 'size:', width, height)
         try:
             data = page.thumbnail(nbytes=False, raw=True, bitmap=False)
             if data[1] is None:
                 print('no thumbnail')
-            bmp = page.render(0, 0, width, height, 0, 0)
+            bmp = page.render(0, 0, width, height, 0, 1)
             try:
                 img = bmp.image()
                 #img.save('page0.jpg', 'JPEG', quality=80)
@@ -68,8 +69,9 @@ class Demo:
             width = page.width()
             height = page.height()
             print('page:', pageno, 'size:', width, height)
+            return
             nb = doc.FPDFPage_CountObjects(page.handle)
-            for i in range(nb+1):
+            for i in range(nb):
                 obj = doc.FPDFPage_GetObject(page.handle, i)
                 objtype = doc.FPDFPageObj_GetType(obj)
                 if objtype == doc.dll.FPDF_PAGEOBJ_TEXT:
@@ -81,7 +83,7 @@ class Demo:
 
     def Demo(self):
         #fname = sys.argv[1]
-        fname = '/devel/01-mirror-sf/00-book/BSI_TR-03110_Part-3-V2_2.pdf'
+        fname = 'faktura_sprzedazy.pdf'
         password = self.lib.ffi.NULL
         print('File:', fname)
         try:
@@ -95,7 +97,7 @@ class Demo:
             title = doc.Title()
             print('Title:', title)
             self.SigInfo(doc)
-            self.PageInfo(doc, 1)
+            #self.PageInfo(doc, 1)
             self.SavePages(doc)
         finally:
             doc.close()
